@@ -54,7 +54,6 @@ pub fn set_bright_spot_grid(model: &Model) -> Result<Vec<Point>, RocheError> {
         1.0e-10,
         1.0e-3,
     )?;
-    // let bspot = Vec3::new(0.1601168644037716, 0.2844699500877693, 0.0);
 
     // Now measure bright-spot angle relative to tangent to disc edge so we need
     // to add 90 + angle of bright-spot to the input value.

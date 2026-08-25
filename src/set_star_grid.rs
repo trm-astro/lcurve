@@ -486,7 +486,6 @@ pub fn add_faces(
         })
         .collect();
 
-    star_grid.clear();
 
     for band in bands {
         star_grid.extend(band);

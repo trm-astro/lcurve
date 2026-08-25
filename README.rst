@@ -1,18 +1,18 @@
 |PyPI version shields.io|
 
-.. |PyPI version shields.io| image:: https://img.shields.io/pypi/v/lroche.svg
-    :target: https://pypi.python.org/pypi/lroche/
+.. |PyPI version shields.io| image:: https://img.shields.io/pypi/v/lcurve.svg
+    :target: https://pypi.python.org/pypi/lcurve/
 
 
-Python extension of the lroche routine from Tom Marsh's LCURVE (cpp-lcurve) translated into Rust
+Python extension replicating Tom Marsh's LCURVE (cpp-lcurve) translated into Rust
 ===================================
 
 
 .. code-block:: python
 
-    import lroche
+    import lcurve
 
-    binary_model = lroche.BinaryModel.from_file("WDdM.mod")
+    binary_model = lcurve.BinaryModel.from_file("WDdM.mod")
 
 load in your data in python and then convert each column to a contiguous array.
 
@@ -81,7 +81,7 @@ Note that `model.update` checks if the grid needs to be rebuilt depending on wha
 
 Checks are now performed to make sure parameters are within allowed ranges when updating from a python dictionary using `BinaryModel.update` or `model.update`. Validation checks are also carried out before the grid is built or updated but it's possible that some edge-cases may exist that don't get flagged so remain cautious about the parameters you supply.
 
-The LCURVE fitting routines, `levmarq`, and `simplex` have not been implemented in lroche, however the relatively simple python interface means that fitting algorithms from scipy can be used easily.
+The LCURVE fitting routines, `levmarq`, and `simplex` have not been implemented in lcurve, however the relatively simple python interface means that fitting algorithms from scipy can be used easily.
 
 .. code-block:: python
 
@@ -108,7 +108,7 @@ It is also possible to supply fluxes directly to the surface grids using a numpy
 
 .. code-block:: python
 
-    binary_model = lroche.BinaryModel.from_file("WDdM.mod")
+    binary_model = lcurve.BinaryModel.from_file("WDdM.mod")
     star1f = binary_model.star1_fine_grid
     binary_model.set_grid_fluxes("star1_fine", 1.0e-10*np.ones_like(star1f))
 

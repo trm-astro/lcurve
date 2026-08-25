@@ -4,8 +4,25 @@ build-backend = "maturin"
 
 [project]
 name = "lcurve"
-version = "0.4.4"
+version = "0.4.6"
 requires-python = ">=3.8"
 
 [tool.maturin]
 features = ["pyo3/extension-module"]
+
+[dependency-groups]
+dev = [
+    { include-group = "docs" },
+    { include-group = "tests" },
+]
+tests = [
+    "pytest",
+    "pytest-cov",
+    "nox",
+]
+docs = [
+    "sphinx",
+    "myst-nb",
+    "myst-parser",
+    "pydata-sphinx-theme",
+]
