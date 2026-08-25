@@ -23,10 +23,8 @@ with your `modfile.mod` file. A team member will generate the `cpp_solution`
 and add it to the PR.
 
 If you generate the `cpp_solution.dat` yourself, please construct it as a
-two-column whitespace-separated ascii file (a good test is if `np.loadtxt()`
-can read it nicely), where column 1 is the x axis (time or phase) and column 2
-is the y axis (flux). As of the time of writing we are not comparing with flux
-uncertainties.
+legacy `lroche` input/output file (columns: time, exposure time, n_div, flux,
+flux uncertainty, weights1, weights2).
 
 The `description.md` should include a short description of the object, e.g.
 Period, Types of components, and specific physics included in the test (e.g.

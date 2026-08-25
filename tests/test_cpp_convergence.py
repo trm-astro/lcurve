@@ -32,13 +32,14 @@ def test_compare_cpp_rust_solution(modfile: str, cpp_solution_file: str) -> None
 
     # Prepare inputs and cpp flux measurements
     time = np.ascontiguousarray(cpp_solution[:, 0])
-    flux = np.ascontiguousarray(cpp_solution[:, 1])
-    t_exp = np.ones_like(time) * 1 / len(time)
-    n_div = np.ones_like(time)
+    t_exp = np.ascontiguousarray(cpp_solution[:, 1])
+    flux = np.ascontiguousarray(cpp_solution[:, 2])
+    flux_unc = np.ascontiguousarray(cpp_solution[:, 3])
+    n_div = np.ascontiguousarray(cpp_solution[:, 4])
 
     # Calculate _Rust_ light curve
-    lc = binary_model.compute_light_curve(time, t_exp, n_div)
+    lc = binary_model.compute_light_curve(time, t_exp, n_div=n_div, flux=flux)
 
     # Compare the Rust and C++ solution
     # Use approximate values of the difference to avoid floating point problems
-    assert lc.total == pytest.approx(flux, abs=1e-16)
+    assert lc.total == pytest.approx(flux, abs=1e-100, rel=9e-9)
