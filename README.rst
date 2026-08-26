@@ -121,3 +121,14 @@ e.g.:
 
 Note that lcurve defines the origin, Vec3(0, 0, 0), as the centre-of-mass of star1 and the centre-of-mass of star2 at the position, Vec3(1, 0, 0).
 When defining grid-fluxes like this, the coarse and fine grids will be scaled to give the same total flux at the phases of the switching points as is the case with normally defined grids. However it's probably best to set the fine and coarse grids to the same number of points to prevent any possible issues here.
+
+
+Output convergence with C++
+===========================
+To run the tests that check convergence with _legacy_ C++ code, run
+
+.. code-block:: bash
+
+   pytest
+
+from the root of the repository.
