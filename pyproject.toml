@@ -19,7 +19,8 @@ tests = [
     "pytest",
     "pytest-cov",
     "nox",
-    "numpy"
+    "numpy",
+    "lcurve"
 ]
 docs = [
     "sphinx",
