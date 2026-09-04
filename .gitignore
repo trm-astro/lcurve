@@ -29,3 +29,6 @@ src/bin/profile.rs
 # Docs
 docs/_build/
 docs/jupyter_execute/
+
+# Tests
+tests/__pycache__/
