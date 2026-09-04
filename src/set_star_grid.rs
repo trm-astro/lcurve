@@ -168,9 +168,7 @@ pub fn set_star_grid(model: &Model, star: Star, fine: bool) -> Result<Grid, Roch
 
     // Generate arrays over the star's face
     let mut star_grid: Grid = Grid::new(
-        Vec::with_capacity(nface as usize),
-        model.q.value,
-        model.iangle.value
+        Vec::with_capacity(nface as usize)
     );
 
     let acc: f64 = model.delta_phase / 10.0;

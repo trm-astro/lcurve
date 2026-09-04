@@ -153,5 +153,5 @@ pub fn set_bright_spot_grid(model: &Model) -> Result<Grid, RocheError> {
             flux: flux_parallel,
         };
     }
-    Ok(Grid::new(bright_spot_grid, model.q.value, model.iangle.value))
+    Ok(Grid::new(bright_spot_grid))
 }

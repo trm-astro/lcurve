@@ -151,7 +151,7 @@ pub fn set_disc_grid(model: &Model) -> Result<Grid, RocheError> {
             })
         })
         .collect();
-    Ok(Grid::new(disc_grid_points, model.q.value, model.iangle.value))
+    Ok(Grid::new(disc_grid_points))
 }
 
 ///
@@ -375,5 +375,5 @@ pub fn set_disc_edge_grid(
         }
     }
 
-    Ok(Grid::new(edge_grid, model.q.value, model.iangle.value))
+    Ok(Grid::new(edge_grid))
 }

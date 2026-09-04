@@ -628,9 +628,9 @@ fn build_grids(
         set_star_continuum(model, &mut star1_coarse_grid, &mut star2_coarse_grid)?;
     }
 
-    let mut disc_grid: Grid = Grid::new(vec![], model.q.value, model.iangle.value);
-    let mut disc_edge_grid: Grid = Grid::new(vec![], model.q.value, model.iangle.value);
-    let mut bright_spot_grid: Grid = Grid::new(vec![], model.q.value, model.iangle.value);
+    let mut disc_grid: Grid = Grid::new(vec![]);
+    let mut disc_edge_grid: Grid = Grid::new(vec![]);
+    let mut bright_spot_grid: Grid = Grid::new(vec![]);
 
     let mut rlens1 = 0.0;
     if model.glens1 {
