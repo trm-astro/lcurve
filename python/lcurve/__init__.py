@@ -1,5 +1,6 @@
 from ._lcurve import (
     BinaryModel,
+    LightCurve,
     Model,
     Pparam,
     LDCType,
@@ -8,6 +9,7 @@ from ._lcurve import (
 
 __all__ = [
     "BinaryModel",
+    "LightCurve",
     "Model",
     "Pparam",
     "LDCType",

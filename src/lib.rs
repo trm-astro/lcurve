@@ -23,6 +23,9 @@ mod lcurve {
     use crate::binary_model::BinaryModel;
 
     #[pymodule_export]
+    use crate::binary_model::LightCurve;
+
+    #[pymodule_export]
     use crate::model::Model;
 
     #[pymodule_export]

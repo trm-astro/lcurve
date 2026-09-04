@@ -34,3 +34,4 @@ docs/jupyter_execute/
 **/__pycache__/
 
 python/lcurve/_lcurve.abi3.so
+**/*.pyi
