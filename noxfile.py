@@ -7,5 +7,6 @@ def tests(session):
     pyproject = nox.project.load_toml("pyproject.toml")
     # Install dependencies
     session.install(*nox.project.dependency_groups(pyproject, "tests"))
+    session.run("maturin", "develop")
     # Run tests
     session.run("pytest")

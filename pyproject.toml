@@ -4,7 +4,7 @@ build-backend = "maturin"
 
 [project]
 name = "lcurve"
-version = "0.4.5"
+version = "0.4.6"
 requires-python = ">=3.8"
 
 [tool.maturin]
@@ -19,6 +19,8 @@ tests = [
     "pytest",
     "pytest-cov",
     "nox",
+    "numpy",
+    "maturin"
 ]
 docs = [
     "sphinx",

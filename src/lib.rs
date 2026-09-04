@@ -1,7 +1,5 @@
 use pyo3::prelude::*;
 
-use crate::{grid::Grid, ldc::LDCType};
-
 pub mod binary_model;
 pub mod comp_gravity;
 pub mod comp_light;
@@ -19,12 +17,24 @@ pub mod set_star_continuum;
 pub mod set_star_grid;
 
 #[pymodule]
-fn lcurve(_py: Python, m: &Bound<'_, PyModule>) -> PyResult<()> {
-    m.add_class::<binary_model::BinaryModel>()?;
-    m.add_class::<model::Model>()?;
-    m.add_class::<pparam::Pparam>()?;
-    m.add_class::<LDCType>()?;
-    m.add_class::<Grid>()?;
-    m.add("__version__", env!("CARGO_PKG_VERSION"))?;
-    Ok(())
+mod lcurve {
+
+    #[pymodule_export]
+    use crate::binary_model::BinaryModel;
+
+    #[pymodule_export]
+    use crate::model::Model;
+
+    #[pymodule_export]
+    use crate::pparam::Pparam;
+
+    #[pymodule_export]
+    use crate::ldc::LDCType;
+  
+    #[pymodule_export]
+    use crate::grid::Grid;
+    
+    #[allow(non_upper_case_globals)]
+    #[pymodule_export]
+    const __version__: &str = env!("CARGO_PKG_VERSION");
 }
