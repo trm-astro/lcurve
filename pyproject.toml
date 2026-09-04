@@ -9,6 +9,8 @@ requires-python = ">=3.8"
 
 [tool.maturin]
 features = ["pyo3/extension-module"]
+python-source = "python"
+module-name = "lcurve._lcurve"
 
 [dependency-groups]
 dev = [
@@ -28,3 +30,6 @@ docs = [
     "myst-parser",
     "pydata-sphinx-theme",
 ]
+
+[project.scripts]
+example_script = "lcurve.scripts.example_script:example"

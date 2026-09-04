@@ -29,3 +29,8 @@ src/bin/profile.rs
 # Docs
 docs/_build/
 docs/jupyter_execute/
+
+# Tests
+**/__pycache__/
+
+python/lcurve/_lcurve.abi3.so

@@ -16,6 +16,7 @@ pub mod set_star_continuum;
 pub mod set_star_grid;
 
 #[pymodule]
+#[pyo3(name = "_lcurve")]
 mod lcurve {
 
     #[pymodule_export]
