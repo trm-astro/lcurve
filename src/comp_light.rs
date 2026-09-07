@@ -1,7 +1,8 @@
 use crate::ginterp::Ginterp;
+use crate::grid::Grid;
 use crate::ldc::LDC;
 use roche::constants::C;
-use roche::{self, Point, Vec3};
+use roche::{self, Vec3};
 
 //
 // comp_light computes a light curve point for a particular phase. It can
@@ -49,10 +50,10 @@ pub fn comp_light(
     glens1: bool,
     rlens1: f64,
     gint: &Ginterp,
-    star1f: &Vec<Point>,
-    star2f: &Vec<Point>,
-    star1c: &Vec<Point>,
-    star2c: &Vec<Point>,
+    star1f: &Grid,
+    star2f: &Grid,
+    star1c: &Grid,
+    star2c: &Grid,
 ) -> f64 {
     let x_cofm: f64 = q / (1.0 + q);
     let (sini, cosi) = iangle.to_radians().sin_cos();
@@ -98,14 +99,14 @@ pub fn comp_light(
         earth = roche::set_earth(cosi, sini, phi);
 
         ptype = gint.interp_type(phi);
-        let star1: &Vec<Point> = if ptype == 1 { star1f } else { star1c };
+        let star1: &Grid = if ptype == 1 { star1f } else { star1c };
 
-        let star2: &Vec<Point> = if ptype == 3 { star2f } else { star2c };
+        let star2: &Grid = if ptype == 3 { star2f } else { star2c };
 
         ssum = 0.0;
 
         // star 1
-        for point in star1 {
+        for point in &star1.points {
             if point.is_visible(phi) {
                 mu = earth.dot(&point.direction);
                 if ldc1.see(mu) {
@@ -128,7 +129,7 @@ pub fn comp_light(
         // star 2
         ssum2 = 0.0;
 
-        for point in star2 {
+        for point in &star2.points {
             if point.is_visible(phi) {
                 mu = earth.dot(&point.direction);
 
@@ -201,8 +202,8 @@ pub fn comp_star1(
     vscale: f64,
     model_beaming1: bool,
     gint: &Ginterp,
-    star1f: &Vec<Point>,
-    star1c: &Vec<Point>,
+    star1f: &Grid,
+    star1c: &Grid,
 ) -> f64 {
     let x_cofm: f64 = q / (1.0 + q);
     let (sini, cosi) = iangle.to_radians().sin_cos();
@@ -242,12 +243,12 @@ pub fn comp_star1(
 
         // Define the grid to use
         ptype = gint.interp_type(phi);
-        let star1: &Vec<Point> = if ptype == 1 { star1f } else { star1c };
+        let star1: &Grid = if ptype == 1 { star1f } else { star1c };
 
         ssum = 0.0;
         let phi_normed: f64 = phi - phi.floor();
         // star 1
-        for point in star1 {
+        for point in &star1.points {
             if point.is_visible_phase_normed(phi_normed) {
                 mu = earth.dot(&point.direction);
                 if ldc1.see(mu) {
@@ -285,8 +286,8 @@ pub fn comp_star2(
     glens1: bool,
     rlens1: f64,
     gint: &Ginterp,
-    star2f: &Vec<Point>,
-    star2c: &Vec<Point>,
+    star2f: &Grid,
+    star2c: &Grid,
 ) -> f64 {
     let x_cofm: f64 = q / (1.0 + q);
     let (sini, cosi) = iangle.to_radians().sin_cos();
@@ -333,12 +334,12 @@ pub fn comp_star2(
 
         // Define the grid to use
         ptype = gint.interp_type(phi);
-        let star2: &Vec<Point> = if ptype == 3 { star2f } else { star2c };
+        let star2: &Grid = if ptype == 3 { star2f } else { star2c };
 
         ssum = 0.0;
         let phi_normed: f64 = phi - phi.floor();
         // star 2
-        for point in star2 {
+        for point in &star2.points {
             if point.is_visible_phase_normed(phi_normed) {
                 mu = earth.dot(&point.direction);
                 if ldc2.see(mu) {
@@ -404,7 +405,7 @@ pub fn comp_disc(
     phase: f64,
     expose: f64,
     n_div: i32,
-    disc_grid: &Vec<Point>,
+    disc_grid: &Grid,
 ) -> f64 {
     let ri = iangle.to_radians();
     let (sini, cosi) = ri.sin_cos();
@@ -435,7 +436,7 @@ pub fn comp_disc(
         ssum = 0.0;
         let phi_normed: f64 = phi - phi.floor();
         // Disc
-        for point in disc_grid {
+        for point in &disc_grid.points {
             mu = earth.dot(&point.direction);
             if mu > 0.0 && point.is_visible_phase_normed(phi_normed) {
                 ssum += mu
@@ -457,7 +458,7 @@ pub fn comp_disc_edge(
     phase: f64,
     expose: f64,
     n_div: i32,
-    disc_edge_grid: &Vec<Point>,
+    disc_edge_grid: &Grid,
 ) -> f64 {
     let ri: f64 = iangle.to_radians();
     let (sini, cosi) = ri.sin_cos();
@@ -488,7 +489,7 @@ pub fn comp_disc_edge(
         ssum = 0.0;
         let phi_normed: f64 = phi - phi.floor();
         // Disc edge
-        for point in disc_edge_grid {
+        for point in &disc_edge_grid.points {
             mu = earth.dot(&point.direction);
             if mu > 0.0 && point.is_visible_phase_normed(phi_normed) {
                 ssum += mu
@@ -508,7 +509,7 @@ pub fn comp_bright_spot(
     phase: f64,
     expose: f64,
     n_div: i32,
-    bright_spot_grid: &Vec<Point>,
+    bright_spot_grid: &Grid,
 ) -> f64 {
     let ri = iangle.to_radians();
     let (sini, cosi) = ri.sin_cos();
@@ -538,7 +539,7 @@ pub fn comp_bright_spot(
 
         ssum = 0.0;
         // Bright spot
-        for point in bright_spot_grid {
+        for point in &bright_spot_grid.points {
             mu = earth.dot(&point.direction);
             if mu > 0.0 && point.is_visible(phi) {
                 ssum += mu * (point.flux as f64);

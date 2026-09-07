@@ -1,5 +1,7 @@
-use roche::{self, Point, Vec3};
+use roche::{self, Vec3};
 use std::f64::consts::{FRAC_PI_2, PI};
+
+use crate::grid::Grid;
 
 // set_disc_continuum computes the face-on brightness of each element of the
 // disc assuming a power law with radius.
@@ -13,11 +15,11 @@ use std::f64::consts::{FRAC_PI_2, PI};
 // \param wave       wavelength of interest, nm
 // \param disc       grid of elements over disc
 
-pub fn set_disc_continuum(rdisc: f64, tdisc: f64, texp: f64, wave: f64, disc: &mut Vec<Point>) {
+pub fn set_disc_continuum(rdisc: f64, tdisc: f64, texp: f64, wave: f64, disc: &mut Grid) {
     // Reference surface brightness
     let bright: f64 = roche::planck(wave, tdisc);
 
-    for point in disc {
+    for point in &mut disc.points {
         let r: f64 = point.position.length();
         point.flux = (bright * (r / rdisc).powf(texp) * point.area as f64) as f32;
     }
@@ -43,7 +45,7 @@ pub fn set_edge_continuum(
     t2: f64,
     absorb: f64,
     wave: f64,
-    edge: &mut Vec<Point>,
+    edge: &mut Grid,
 ) {
     let mut vec: Vec3;
     let cofm2: Vec3 = Vec3::cofm2();
@@ -52,7 +54,7 @@ pub fn set_edge_continuum(
     let mut mu: f64;
     let mut r: f64;
 
-    for point in edge {
+    for point in &mut edge.points {
         vec = cofm2 - point.position;
         r = vec.length();
         mu = vec.dot(&point.direction) / r;
