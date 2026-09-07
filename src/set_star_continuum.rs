@@ -1,11 +1,11 @@
-use crate::model::Model;
-use roche::{self, Point, Vec3, constants::EFAC, errors::RocheError};
+use crate::{grid::Grid, model::Model};
+use roche::{self, Vec3, constants::EFAC, errors::RocheError};
 use std::f64::consts::PI;
 
 pub fn set_star_continuum(
     model: &Model,
-    star1: &mut Vec<Point>,
-    star2: &mut Vec<Point>,
+    star1: &mut Grid,
+    star2: &mut Grid,
 ) -> Result<(), RocheError> {
     let (mut r1, mut r2) = model.get_r1r2();
 
@@ -90,7 +90,7 @@ pub fn set_star_continuum(
         Vec3::new(0.0, 0.0, 0.0)
     };
 
-    for point in star1 {
+    for point in &mut star1.points {
         let vec: Vec3 = cofm2 - point.position;
         let r: f64 = vec.length();
         let mu: f64 = point.direction.dot(&vec) / r;
@@ -226,7 +226,7 @@ pub fn set_star_continuum(
         Vec3::new(0.0, 0.0, 0.0)
     };
 
-    for point in star2 {
+    for point in &mut star2.points {
         let vec: Vec3 = cofm1 - point.position;
         let r: f64 = vec.length();
         let mu: f64 = point.direction.dot(&vec) / r;

@@ -1,3 +1,4 @@
+use crate::grid::Grid;
 use crate::model::Model;
 use crate::set_star_grid::star_eclipse;
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
@@ -25,7 +26,7 @@ use std::panic;
 /// \exception Exceptions are thrown if the specified radii over-fill the
 /// Roche lobes.
 ///
-pub fn set_disc_grid(model: &Model) -> Result<Vec<Point>, RocheError> {
+pub fn set_disc_grid(model: &Model) -> Result<Grid, RocheError> {
     const EFAC: f64 = 1.0000001;
 
     let (mut r1, mut r2) = model.get_r1r2();
@@ -83,7 +84,7 @@ pub fn set_disc_grid(model: &Model) -> Result<Vec<Point>, RocheError> {
     let drad: f64 = (rdisc2 - rdisc1) / model.nrad as f64;
     let drrad: f64 = rdisc2 / model.nrad as f64;
 
-    let disc_grid: Vec<Point> = (0..model.nrad)
+    let disc_grid_points: Vec<Point> = (0..model.nrad)
         .into_par_iter()
         .flat_map_iter(|i| {
             let rad: f64 = rdisc1 + (rdisc2 - rdisc1) * (i as f64 + 0.5) / model.nrad as f64;
@@ -150,7 +151,7 @@ pub fn set_disc_grid(model: &Model) -> Result<Vec<Point>, RocheError> {
             })
         })
         .collect();
-    Ok(disc_grid)
+    Ok(Grid::new(disc_grid_points))
 }
 
 ///
@@ -177,7 +178,7 @@ pub fn set_disc_edge_grid(
     model: &Model,
     outer: bool,
     visual: bool,
-) -> Result<Vec<Point>, RocheError> {
+) -> Result<Grid, RocheError> {
     const EFAC: f64 = 1.0000001;
 
     let (mut r1, mut r2) = model.get_r1r2();
@@ -374,5 +375,5 @@ pub fn set_disc_edge_grid(
         }
     }
 
-    Ok(edge_grid)
+    Ok(Grid::new(edge_grid))
 }
