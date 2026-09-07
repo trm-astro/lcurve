@@ -23,128 +23,54 @@ impl Grid {
     }
 
     pub fn position(&self, iangle: f64, phase: Option<f64>) -> Vec<Vec3> {
-        
-        let position: Vec<Vec3> = match phase {
-            Some(phase) => {
-                let mut position: Vec<Vec3> = vec![];
-                let earth = roche::set_earth_iangle(iangle, phase);
-                for point in &self.points {
-                    if earth.dot(&point.direction) > 0.0 && point.is_visible(phase) {
-                        position.push(point.position);
-                    }
-                }
-                position
-            },
-            None => {
-                let mut position: Vec<Vec3> = vec![];
-                for point in &self.points {
-                    position.push(point.position);
-                }
-                position
-            }
-        };
-
-        position
+        self.visible_values(iangle, phase, |point| point.position)
     }
 
     pub fn direction(&self, iangle: f64, phase: Option<f64>) -> Vec<Vec3> {
-        
-        let direction: Vec<Vec3> = match phase {
-            Some(phase) => {
-                let mut direction: Vec<Vec3> = vec![];
-                let earth = roche::set_earth_iangle(iangle, phase);
-                for point in &self.points {
-                    if earth.dot(&point.direction) > 0.0 && point.is_visible(phase) {
-                        direction.push(point.direction);
-                    }
-                }
-                direction
-            },
-            None => {
-                let mut direction: Vec<Vec3> = vec![];
-                for point in &self.points {
-                    direction.push(point.direction);
-                }
-                direction
-            }
-        };
-
-        direction
-    }
-
-    pub fn gravity(&self, iangle: f64, phase: Option<f64>) -> Vec<f32> {
-        
-        let gravity: Vec<f32> = match phase {
-            Some(phase) => {
-                let mut gravity: Vec<f32> = vec![];
-                let earth = roche::set_earth_iangle(iangle, phase);
-                for point in &self.points {
-                    if earth.dot(&point.direction) > 0.0 && point.is_visible(phase) {
-                        gravity.push(point.gravity);
-                    }
-                }
-                gravity
-            },
-            None => {
-                let mut gravity: Vec<f32> = vec![];
-                for point in &self.points {
-                    gravity.push(point.gravity);
-                }
-                gravity
-            }
-        };
-
-        gravity
+        self.visible_values(iangle, phase, |point| point.direction)
     }
 
     pub fn area(&self, iangle: f64, phase: Option<f64>) -> Vec<f32> {
-        
-        let area: Vec<f32> = match phase {
-            Some(phase) => {
-                let mut area: Vec<f32> = vec![];
-                let earth = roche::set_earth_iangle(iangle, phase);
-                for point in &self.points {
-                    if earth.dot(&point.direction) > 0.0 && point.is_visible(phase) {
-                        area.push(point.area);
-                    }
-                }
-                area
-            },
-            None => {
-                let mut area: Vec<f32> = vec![];
-                for point in &self.points {
-                    area.push(point.area);
-                }
-                area
-            }
-        };
+        self.visible_values(iangle, phase, |point| point.area)
+    }
+    
+    pub fn gravity(&self, iangle: f64, phase: Option<f64>) -> Vec<f32> {
+        self.visible_values(iangle, phase, |point| point.gravity)
+    }
 
-        area
+    pub fn eclipse(&self, iangle: f64, phase: Option<f64>) -> Vec<Vec<(f64, f64)>> {
+        self.visible_values(iangle, phase, |point| point.eclipse.clone())
     }
 
     pub fn flux(&self, iangle: f64, phase: Option<f64>) -> Vec<f32> {
-        
-        let flux: Vec<f32> = match phase {
-            Some(phase) => {
-                let mut flux: Vec<f32> = vec![];
-                let earth = roche::set_earth_iangle(iangle, phase);
-                for point in &self.points {
-                    if earth.dot(&point.direction) > 0.0 && point.is_visible(phase) {
-                        flux.push(point.flux);
-                    }
-                }
-                flux
-            },
-            None => {
-                let mut flux: Vec<f32> = vec![];
-                for point in &self.points {
-                    flux.push(point.flux);
-                }
-                flux
-            }
-        };
+        self.visible_values(iangle, phase, |point| point.flux)
+    }
 
-        flux
+    /// 
+    /// Given an inclination, a function, and an optional phase, visible_values
+    /// filters the points based on the visibility and returns the filtered
+    /// output of the supplied function.
+    /// 
+    fn visible_values<T, F>(&self, iangle: f64, phase: Option<f64>, f: F) -> Vec<T>
+    where F: Fn(&Point) -> T {
+        match phase {
+            Some(phase) => {
+                let earth = roche::set_earth_iangle(iangle, phase);
+
+                self.points
+                    .iter()
+                    .filter(|point| {
+                        earth.dot(&point.direction) > 0.0
+                            && point.is_visible(phase)
+                    })
+                    .map(f)
+                    .collect()
+            }
+            None => self.points
+                        .iter()
+                        .map(f)
+                        .collect()
+        }
     }
 
 }
@@ -157,6 +83,13 @@ impl Grid {
         
         let area: Vec<f32> = self.area(iangle, phase);
         area.into_pyarray(py).unbind()
+    }
+
+    #[pyo3(name="gravity", signature = (iangle, phase=None))]
+    pub fn python_gravity(&self, py: Python, iangle: f64, phase: Option<f64>) -> Py<PyArray1<f32>> {
+        
+        let gravity: Vec<f32> = self.gravity(iangle, phase);
+        gravity.into_pyarray(py).unbind()
     }
 
     #[pyo3(name="flux", signature = (iangle, phase=None))]
