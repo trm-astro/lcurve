@@ -33,3 +33,4 @@ docs = [
 
 [project.scripts]
 example_script = "lcurve.scripts.example_script:example"
+visualise = "lcurve.scripts.visualise:visualise"
