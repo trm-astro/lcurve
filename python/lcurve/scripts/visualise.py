@@ -40,6 +40,7 @@ def visualise():
     parser.add_argument('end_phase', help="last orbital phase to plot")
     parser.add_argument('n_phases', help="Number of orbital phases to cycle through")
     parser.add_argument('--cmap', help="matplotlib colormap to plot with", default='viridis')
+    parser.add_argument('--background', help="plot background color", default='w')
     args = parser.parse_args()
 
     start_phase = float(args.start_phase)
@@ -62,12 +63,16 @@ def visualise():
     fluxes5 = binary_model.bright_spot_grid.flux(iangle) / binary_model.bright_spot_grid.area(iangle)
     all_fluxes = np.concatenate([fluxes1, fluxes2, fluxes3, fluxes4, fluxes5])
     positive_nonzero = all_fluxes[all_fluxes > 0]
-
+    
     norm_all = mpl.colors.LogNorm(positive_nonzero.min(), all_fluxes.max())
+
+    norm1 = mpl.colors.Normalize(vmin=fluxes1.min(), vmax=fluxes1.max()*1.01)
+    norm2 = mpl.colors.Normalize(vmin=fluxes2.min(), vmax=fluxes2.max()*1.01)
 
     print("Use 'Enter' key to move through phases.\n")
     fig, ax = plt.subplots()
-        
+
+    ax.set_facecolor(args.background)
     calculation1 = calculation(binary_model, start_phase, end_phase, n_phases, binary_model.star1_fine_grid, binary_model.star1_coarse_grid, True)
     calculation2 = calculation(binary_model, start_phase, end_phase, n_phases, binary_model.star2_fine_grid, binary_model.star2_coarse_grid, False)
     calculation3 = calculation(binary_model, start_phase, end_phase, n_phases, binary_model.disc_grid)
