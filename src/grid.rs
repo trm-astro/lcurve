@@ -1,4 +1,4 @@
-use roche::{self, Point, Vec3};
+use roche::{self, Point, Vec3, reverse_planck};
 use std::f64::consts::TAU;
 use numpy::{IntoPyArray, PyArray1};
 use pyo3::prelude::*;
@@ -44,6 +44,10 @@ impl Grid {
 
     pub fn flux(&self, iangle: f64, phase: Option<f64>) -> Vec<f32> {
         self.visible_values(iangle, phase, |point| point.flux)
+    }
+
+    pub fn temperature(&self, wavelength: f64, iangle: f64, phase: Option<f64>) -> Vec<f32> {
+        self.visible_values(iangle, phase, |point| reverse_planck(point.flux as f64 / point.area as f64, wavelength) as f32)
     }
 
     /// 
@@ -97,6 +101,13 @@ impl Grid {
         
         let flux: Vec<f32> = self.flux(iangle, phase);
         flux.into_pyarray(py).unbind()
+    }
+
+    #[pyo3(name="temperature", signature = (wavelength, iangle, phase=None))]
+    pub fn python_temperature(&self, py: Python, wavelength: f64, iangle: f64, phase: Option<f64>) -> Py<PyArray1<f32>> {
+        
+        let temperature: Vec<f32> = self.temperature(wavelength, iangle, phase);
+        temperature.into_pyarray(py).unbind()
     }
 
     ///

@@ -63,7 +63,7 @@ checksum = "8f42a60cbdf9a97f5d2305f08a87dc4e09308d1276d28c869c684d7777685682"
 
 [[package]]
 name = "lcurve"
-version = "0.4.6"
+version = "0.5.1"
 dependencies = [
  "bulirsch",
  "ndarray",
@@ -286,9 +286,9 @@ dependencies = [
 
 [[package]]
 name = "roche-rs"
-version = "0.5.5"
+version = "0.5.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a57f2ebf04ec3b8b6f5fd71014ddf6bafd0cd802077c67f02300a6f39e1a8476"
+checksum = "1668a1bf3415824ea92db3692d3fa283756932716fdf545b8389f726511355d2"
 dependencies = [
  "bulirsch",
  "ndarray",
