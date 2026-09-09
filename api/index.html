@@ -1,0 +1,1432 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>API reference &#8212; lcurve 0.5.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
+
+    <script src="../_static/documentation_options.js?v=b9afe91b"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/index';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Contributing to lcurve" href="../development/contributing.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.5.1" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">lcurve 0.5.1 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../about.html">
+    About
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../development/index.html">
+    Package development and contribution
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    API reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../about.html">
+    About
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../development/index.html">
+    Package development and contribution
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    API reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+  <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"></div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">API reference</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="module-lcurve">
+<span id="api-reference"></span><h1>API reference<a class="headerlink" href="#module-lcurve" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="lcurve.BinaryModel">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">lcurve.</span></span><span class="sig-name descname"><span class="pre">BinaryModel</span></span><a class="headerlink" href="#lcurve.BinaryModel" title="Link to this definition">#</a></dt>
+<dd><p><a class="reference internal" href="#lcurve.BinaryModel" title="lcurve.BinaryModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">BinaryModel</span></code></a> is a class to contain the model and grids for a close
+binary system.</p>
+<p>An instance of <a class="reference internal" href="#lcurve.BinaryModel" title="lcurve.BinaryModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">BinaryModel</span></code></a> can be initialised either from an
+<cite>lcurve</cite> .mod file using <a class="reference internal" href="#lcurve.BinaryModel.from_file" title="lcurve.BinaryModel.from_file"><code class="xref py py-meth docutils literal notranslate"><span class="pre">BinaryModel.from_file()</span></code></a> or from an instance
+of <a class="reference internal" href="#lcurve.Model" title="lcurve.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">lcurve.Model</span></code></a> using <a class="reference internal" href="#lcurve.BinaryModel.from_model" title="lcurve.BinaryModel.from_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">BinaryModel.from_model()</span></code></a>.</p>
+<p>Parameters can be updated by supplying a python dictionary of parameter
+key: value pairs to <a class="reference internal" href="#lcurve.BinaryModel.update" title="lcurve.BinaryModel.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">BinaryModel.update()</span></code></a>.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.BinaryModel.bright_spot_grid">
+<span class="sig-name descname"><span class="pre">bright_spot_grid</span></span><a class="headerlink" href="#lcurve.BinaryModel.bright_spot_grid" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lcurve.BinaryModel.compute_light_curve">
+<span class="sig-name descname"><span class="pre">compute_light_curve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_exp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_div</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flux</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flux_err</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lcurve.BinaryModel.compute_light_curve" title="Link to this definition">#</a></dt>
+<dd><p>grid options are:
+“star1_fine”,
+“star1_coarse”,
+“star2_fine”,
+“star2_coarse”,
+“disc”,
+“disc_edge”,
+“bright_spot”</p>
+<p>Computes a model light curve for an array of times and exposure times
+for the current parameters defined in <code class="xref py py-class docutils literal notranslate"><span class="pre">BinaryModel.Model</span></code>.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li><p><cite>time</cite>: Array of times</p></li>
+<li><p><cite>t_exp</cite>: Array of exposure times (same units as <cite>time</cite>)</p></li>
+<li><dl class="simple">
+<dt><cite>n_div</cite>: (Optional) number of exposure subdivisions to use to model</dt><dd><p>smearing from finite exposure times.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><cite>flux</cite>: (Optional) flux of data to enable automatic scaling of the model</dt><dd><p>as well as for calculations of chi2 and log_prob.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><cite>flux_err</cite>: (Optional) flux uncertainty of data to enable automatic</dt><dd><p>scaling of the model as well as for calculations of chi2 and
+log_prob.</p>
+</dd>
+</dl>
+</li>
+<li><p><cite>weight</cite>: (Optional) weights for autoscaling, chi2, and log_prob</p></li>
+<li><dl class="simple">
+<dt><cite>scale_factor</cite>: (Optional) Scale factor to multiply light curve model</dt><dd><p>by. Prevents autoscaling</p>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">LightCurve</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.BinaryModel.disc_edge_grid">
+<span class="sig-name descname"><span class="pre">disc_edge_grid</span></span><a class="headerlink" href="#lcurve.BinaryModel.disc_edge_grid" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.BinaryModel.disc_grid">
+<span class="sig-name descname"><span class="pre">disc_grid</span></span><a class="headerlink" href="#lcurve.BinaryModel.disc_grid" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lcurve.BinaryModel.from_file">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lcurve.BinaryModel.from_file" title="Link to this definition">#</a></dt>
+<dd><p>Create a <a class="reference internal" href="#lcurve.BinaryModel" title="lcurve.BinaryModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">BinaryModel</span></code></a> from an lcurve .mod file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – the path to the .mod file</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>class instance</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#lcurve.BinaryModel" title="lcurve.BinaryModel">BinaryModel</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lcurve.BinaryModel.from_model">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lcurve.BinaryModel.from_model" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.BinaryModel.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#lcurve.BinaryModel.model" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.BinaryModel.star1_coarse_grid">
+<span class="sig-name descname"><span class="pre">star1_coarse_grid</span></span><a class="headerlink" href="#lcurve.BinaryModel.star1_coarse_grid" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.BinaryModel.star1_fine_grid">
+<span class="sig-name descname"><span class="pre">star1_fine_grid</span></span><a class="headerlink" href="#lcurve.BinaryModel.star1_fine_grid" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.BinaryModel.star2_coarse_grid">
+<span class="sig-name descname"><span class="pre">star2_coarse_grid</span></span><a class="headerlink" href="#lcurve.BinaryModel.star2_coarse_grid" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.BinaryModel.star2_fine_grid">
+<span class="sig-name descname"><span class="pre">star2_fine_grid</span></span><a class="headerlink" href="#lcurve.BinaryModel.star2_fine_grid" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lcurve.BinaryModel.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lcurve.BinaryModel.update" title="Link to this definition">#</a></dt>
+<dd><p>Method to update <code class="xref py py-class docutils literal notranslate"><span class="pre">BinaryModel.Model</span></code> from a supplied Python dictionary and
+rebuild grids if the geometry has changed, otherwise just updating the
+continuum of the current grid.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lcurve.Grid">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">lcurve.</span></span><span class="sig-name descname"><span class="pre">Grid</span></span><a class="headerlink" href="#lcurve.Grid" title="Link to this definition">#</a></dt>
+<dd><p>Grid is a struct to hold the vector of <cite>Vec&lt;Points&gt;</cite> defining a
+component grid along with methods to act on this.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lcurve.Grid.area">
+<span class="sig-name descname"><span class="pre">area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iangle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lcurve.Grid.area" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lcurve.Grid.flux">
+<span class="sig-name descname"><span class="pre">flux</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iangle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lcurve.Grid.flux" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lcurve.Grid.gravity">
+<span class="sig-name descname"><span class="pre">gravity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iangle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lcurve.Grid.gravity" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Grid.points">
+<span class="sig-name descname"><span class="pre">points</span></span><a class="headerlink" href="#lcurve.Grid.points" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lcurve.Grid.project_2d">
+<span class="sig-name descname"><span class="pre">project_2d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iangle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lcurve.Grid.project_2d" title="Link to this definition">#</a></dt>
+<dd><p>Projects the grid onto a 2D plane as seen at the model inclination
+at the supplied phase with the binary centre of mass as the origin.</p>
+<p>Arguments
+* <cite>q</cite> - Binary mass ratio M2/M1.
+* <cite>iangle</cite> - Orbital inclination at which to project the grid.
+* <cite>phase</cite> - Orbital phase at which to project the grid</p>
+<p>Returns
+(x, y) - Arrays of projected grid point positions</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lcurve.Grid.temperature">
+<span class="sig-name descname"><span class="pre">temperature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iangle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lcurve.Grid.temperature" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lcurve.LDCType">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">lcurve.</span></span><span class="sig-name descname"><span class="pre">LDCType</span></span><a class="headerlink" href="#lcurve.LDCType" title="Link to this definition">#</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.LDCType.Claret">
+<span class="sig-name descname"><span class="pre">Claret</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">LDCType.Claret</span></span><a class="headerlink" href="#lcurve.LDCType.Claret" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.LDCType.Poly">
+<span class="sig-name descname"><span class="pre">Poly</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">LDCType.Poly</span></span><a class="headerlink" href="#lcurve.LDCType.Poly" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lcurve.Model">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">lcurve.</span></span><span class="sig-name descname"><span class="pre">Model</span></span><a class="headerlink" href="#lcurve.Model" title="Link to this definition">#</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.absorb">
+<span class="sig-name descname"><span class="pre">absorb</span></span><a class="headerlink" href="#lcurve.Model.absorb" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.absorb_edge">
+<span class="sig-name descname"><span class="pre">absorb_edge</span></span><a class="headerlink" href="#lcurve.Model.absorb_edge" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.add_disc">
+<span class="sig-name descname"><span class="pre">add_disc</span></span><a class="headerlink" href="#lcurve.Model.add_disc" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.add_spot">
+<span class="sig-name descname"><span class="pre">add_spot</span></span><a class="headerlink" href="#lcurve.Model.add_spot" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.angle_spot">
+<span class="sig-name descname"><span class="pre">angle_spot</span></span><a class="headerlink" href="#lcurve.Model.angle_spot" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.beam_factor1">
+<span class="sig-name descname"><span class="pre">beam_factor1</span></span><a class="headerlink" href="#lcurve.Model.beam_factor1" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.beam_factor2">
+<span class="sig-name descname"><span class="pre">beam_factor2</span></span><a class="headerlink" href="#lcurve.Model.beam_factor2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.beta_disc">
+<span class="sig-name descname"><span class="pre">beta_disc</span></span><a class="headerlink" href="#lcurve.Model.beta_disc" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.cfrac_spot">
+<span class="sig-name descname"><span class="pre">cfrac_spot</span></span><a class="headerlink" href="#lcurve.Model.cfrac_spot" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.cphi3">
+<span class="sig-name descname"><span class="pre">cphi3</span></span><a class="headerlink" href="#lcurve.Model.cphi3" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.cphi4">
+<span class="sig-name descname"><span class="pre">cphi4</span></span><a class="headerlink" href="#lcurve.Model.cphi4" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.cube">
+<span class="sig-name descname"><span class="pre">cube</span></span><a class="headerlink" href="#lcurve.Model.cube" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.delta_phase">
+<span class="sig-name descname"><span class="pre">delta_phase</span></span><a class="headerlink" href="#lcurve.Model.delta_phase" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.deltat">
+<span class="sig-name descname"><span class="pre">deltat</span></span><a class="headerlink" href="#lcurve.Model.deltat" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.eclipse1">
+<span class="sig-name descname"><span class="pre">eclipse1</span></span><a class="headerlink" href="#lcurve.Model.eclipse1" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.eclipse2">
+<span class="sig-name descname"><span class="pre">eclipse2</span></span><a class="headerlink" href="#lcurve.Model.eclipse2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.epow_spot">
+<span class="sig-name descname"><span class="pre">epow_spot</span></span><a class="headerlink" href="#lcurve.Model.epow_spot" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.expon_spot">
+<span class="sig-name descname"><span class="pre">expon_spot</span></span><a class="headerlink" href="#lcurve.Model.expon_spot" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lcurve.Model.from_file">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lcurve.Model.from_file" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.gdark_bolom1">
+<span class="sig-name descname"><span class="pre">gdark_bolom1</span></span><a class="headerlink" href="#lcurve.Model.gdark_bolom1" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.gdark_bolom2">
+<span class="sig-name descname"><span class="pre">gdark_bolom2</span></span><a class="headerlink" href="#lcurve.Model.gdark_bolom2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.glens1">
+<span class="sig-name descname"><span class="pre">glens1</span></span><a class="headerlink" href="#lcurve.Model.glens1" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.gravity_dark1">
+<span class="sig-name descname"><span class="pre">gravity_dark1</span></span><a class="headerlink" href="#lcurve.Model.gravity_dark1" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.gravity_dark2">
+<span class="sig-name descname"><span class="pre">gravity_dark2</span></span><a class="headerlink" href="#lcurve.Model.gravity_dark2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.height_disc">
+<span class="sig-name descname"><span class="pre">height_disc</span></span><a class="headerlink" href="#lcurve.Model.height_disc" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.height_spot">
+<span class="sig-name descname"><span class="pre">height_spot</span></span><a class="headerlink" href="#lcurve.Model.height_spot" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.iangle">
+<span class="sig-name descname"><span class="pre">iangle</span></span><a class="headerlink" href="#lcurve.Model.iangle" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.iscale">
+<span class="sig-name descname"><span class="pre">iscale</span></span><a class="headerlink" href="#lcurve.Model.iscale" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.ldc1_1">
+<span class="sig-name descname"><span class="pre">ldc1_1</span></span><a class="headerlink" href="#lcurve.Model.ldc1_1" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.ldc1_2">
+<span class="sig-name descname"><span class="pre">ldc1_2</span></span><a class="headerlink" href="#lcurve.Model.ldc1_2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.ldc1_3">
+<span class="sig-name descname"><span class="pre">ldc1_3</span></span><a class="headerlink" href="#lcurve.Model.ldc1_3" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.ldc1_4">
+<span class="sig-name descname"><span class="pre">ldc1_4</span></span><a class="headerlink" href="#lcurve.Model.ldc1_4" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.ldc2_1">
+<span class="sig-name descname"><span class="pre">ldc2_1</span></span><a class="headerlink" href="#lcurve.Model.ldc2_1" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.ldc2_2">
+<span class="sig-name descname"><span class="pre">ldc2_2</span></span><a class="headerlink" href="#lcurve.Model.ldc2_2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.ldc2_3">
+<span class="sig-name descname"><span class="pre">ldc2_3</span></span><a class="headerlink" href="#lcurve.Model.ldc2_3" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.ldc2_4">
+<span class="sig-name descname"><span class="pre">ldc2_4</span></span><a class="headerlink" href="#lcurve.Model.ldc2_4" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.length_spot">
+<span class="sig-name descname"><span class="pre">length_spot</span></span><a class="headerlink" href="#lcurve.Model.length_spot" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.lfudge">
+<span class="sig-name descname"><span class="pre">lfudge</span></span><a class="headerlink" href="#lcurve.Model.lfudge" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.lhi">
+<span class="sig-name descname"><span class="pre">lhi</span></span><a class="headerlink" href="#lcurve.Model.lhi" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.limb1">
+<span class="sig-name descname"><span class="pre">limb1</span></span><a class="headerlink" href="#lcurve.Model.limb1" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.limb2">
+<span class="sig-name descname"><span class="pre">limb2</span></span><a class="headerlink" href="#lcurve.Model.limb2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.lin_limb_disc">
+<span class="sig-name descname"><span class="pre">lin_limb_disc</span></span><a class="headerlink" href="#lcurve.Model.lin_limb_disc" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.llo">
+<span class="sig-name descname"><span class="pre">llo</span></span><a class="headerlink" href="#lcurve.Model.llo" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.mirror">
+<span class="sig-name descname"><span class="pre">mirror</span></span><a class="headerlink" href="#lcurve.Model.mirror" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.mucrit1">
+<span class="sig-name descname"><span class="pre">mucrit1</span></span><a class="headerlink" href="#lcurve.Model.mucrit1" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.mucrit2">
+<span class="sig-name descname"><span class="pre">mucrit2</span></span><a class="headerlink" href="#lcurve.Model.mucrit2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.nlat1c">
+<span class="sig-name descname"><span class="pre">nlat1c</span></span><a class="headerlink" href="#lcurve.Model.nlat1c" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.nlat1f">
+<span class="sig-name descname"><span class="pre">nlat1f</span></span><a class="headerlink" href="#lcurve.Model.nlat1f" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.nlat2c">
+<span class="sig-name descname"><span class="pre">nlat2c</span></span><a class="headerlink" href="#lcurve.Model.nlat2c" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.nlat2f">
+<span class="sig-name descname"><span class="pre">nlat2f</span></span><a class="headerlink" href="#lcurve.Model.nlat2f" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.nlatfill">
+<span class="sig-name descname"><span class="pre">nlatfill</span></span><a class="headerlink" href="#lcurve.Model.nlatfill" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.nlngfill">
+<span class="sig-name descname"><span class="pre">nlngfill</span></span><a class="headerlink" href="#lcurve.Model.nlngfill" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.npole">
+<span class="sig-name descname"><span class="pre">npole</span></span><a class="headerlink" href="#lcurve.Model.npole" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.nrad">
+<span class="sig-name descname"><span class="pre">nrad</span></span><a class="headerlink" href="#lcurve.Model.nrad" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.nspot">
+<span class="sig-name descname"><span class="pre">nspot</span></span><a class="headerlink" href="#lcurve.Model.nspot" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.opaque">
+<span class="sig-name descname"><span class="pre">opaque</span></span><a class="headerlink" href="#lcurve.Model.opaque" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.pdot">
+<span class="sig-name descname"><span class="pre">pdot</span></span><a class="headerlink" href="#lcurve.Model.pdot" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.period">
+<span class="sig-name descname"><span class="pre">period</span></span><a class="headerlink" href="#lcurve.Model.period" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.phase1">
+<span class="sig-name descname"><span class="pre">phase1</span></span><a class="headerlink" href="#lcurve.Model.phase1" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.phase2">
+<span class="sig-name descname"><span class="pre">phase2</span></span><a class="headerlink" href="#lcurve.Model.phase2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.q">
+<span class="sig-name descname"><span class="pre">q</span></span><a class="headerlink" href="#lcurve.Model.q" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.quad">
+<span class="sig-name descname"><span class="pre">quad</span></span><a class="headerlink" href="#lcurve.Model.quad" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.quad_limb_disc">
+<span class="sig-name descname"><span class="pre">quad_limb_disc</span></span><a class="headerlink" href="#lcurve.Model.quad_limb_disc" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.r1">
+<span class="sig-name descname"><span class="pre">r1</span></span><a class="headerlink" href="#lcurve.Model.r1" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.r2">
+<span class="sig-name descname"><span class="pre">r2</span></span><a class="headerlink" href="#lcurve.Model.r2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.radius_spot">
+<span class="sig-name descname"><span class="pre">radius_spot</span></span><a class="headerlink" href="#lcurve.Model.radius_spot" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.rdisc1">
+<span class="sig-name descname"><span class="pre">rdisc1</span></span><a class="headerlink" href="#lcurve.Model.rdisc1" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.rdisc2">
+<span class="sig-name descname"><span class="pre">rdisc2</span></span><a class="headerlink" href="#lcurve.Model.rdisc2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.roche1">
+<span class="sig-name descname"><span class="pre">roche1</span></span><a class="headerlink" href="#lcurve.Model.roche1" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.roche2">
+<span class="sig-name descname"><span class="pre">roche2</span></span><a class="headerlink" href="#lcurve.Model.roche2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.slope">
+<span class="sig-name descname"><span class="pre">slope</span></span><a class="headerlink" href="#lcurve.Model.slope" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.spin1">
+<span class="sig-name descname"><span class="pre">spin1</span></span><a class="headerlink" href="#lcurve.Model.spin1" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.spin2">
+<span class="sig-name descname"><span class="pre">spin2</span></span><a class="headerlink" href="#lcurve.Model.spin2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.stsp11_fwhm">
+<span class="sig-name descname"><span class="pre">stsp11_fwhm</span></span><a class="headerlink" href="#lcurve.Model.stsp11_fwhm" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.stsp11_lat">
+<span class="sig-name descname"><span class="pre">stsp11_lat</span></span><a class="headerlink" href="#lcurve.Model.stsp11_lat" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.stsp11_long">
+<span class="sig-name descname"><span class="pre">stsp11_long</span></span><a class="headerlink" href="#lcurve.Model.stsp11_long" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.stsp11_tcen">
+<span class="sig-name descname"><span class="pre">stsp11_tcen</span></span><a class="headerlink" href="#lcurve.Model.stsp11_tcen" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.stsp12_fwhm">
+<span class="sig-name descname"><span class="pre">stsp12_fwhm</span></span><a class="headerlink" href="#lcurve.Model.stsp12_fwhm" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.stsp12_lat">
+<span class="sig-name descname"><span class="pre">stsp12_lat</span></span><a class="headerlink" href="#lcurve.Model.stsp12_lat" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.stsp12_long">
+<span class="sig-name descname"><span class="pre">stsp12_long</span></span><a class="headerlink" href="#lcurve.Model.stsp12_long" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.stsp12_tcen">
+<span class="sig-name descname"><span class="pre">stsp12_tcen</span></span><a class="headerlink" href="#lcurve.Model.stsp12_tcen" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.stsp13_fwhm">
+<span class="sig-name descname"><span class="pre">stsp13_fwhm</span></span><a class="headerlink" href="#lcurve.Model.stsp13_fwhm" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.stsp13_lat">
+<span class="sig-name descname"><span class="pre">stsp13_lat</span></span><a class="headerlink" href="#lcurve.Model.stsp13_lat" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.stsp13_long">
+<span class="sig-name descname"><span class="pre">stsp13_long</span></span><a class="headerlink" href="#lcurve.Model.stsp13_long" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.stsp13_tcen">
+<span class="sig-name descname"><span class="pre">stsp13_tcen</span></span><a class="headerlink" href="#lcurve.Model.stsp13_tcen" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.stsp21_fwhm">
+<span class="sig-name descname"><span class="pre">stsp21_fwhm</span></span><a class="headerlink" href="#lcurve.Model.stsp21_fwhm" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.stsp21_lat">
+<span class="sig-name descname"><span class="pre">stsp21_lat</span></span><a class="headerlink" href="#lcurve.Model.stsp21_lat" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.stsp21_long">
+<span class="sig-name descname"><span class="pre">stsp21_long</span></span><a class="headerlink" href="#lcurve.Model.stsp21_long" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.stsp21_tcen">
+<span class="sig-name descname"><span class="pre">stsp21_tcen</span></span><a class="headerlink" href="#lcurve.Model.stsp21_tcen" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.stsp22_fwhm">
+<span class="sig-name descname"><span class="pre">stsp22_fwhm</span></span><a class="headerlink" href="#lcurve.Model.stsp22_fwhm" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.stsp22_lat">
+<span class="sig-name descname"><span class="pre">stsp22_lat</span></span><a class="headerlink" href="#lcurve.Model.stsp22_lat" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.stsp22_long">
+<span class="sig-name descname"><span class="pre">stsp22_long</span></span><a class="headerlink" href="#lcurve.Model.stsp22_long" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.stsp22_tcen">
+<span class="sig-name descname"><span class="pre">stsp22_tcen</span></span><a class="headerlink" href="#lcurve.Model.stsp22_tcen" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.t0">
+<span class="sig-name descname"><span class="pre">t0</span></span><a class="headerlink" href="#lcurve.Model.t0" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.t1">
+<span class="sig-name descname"><span class="pre">t1</span></span><a class="headerlink" href="#lcurve.Model.t1" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.t2">
+<span class="sig-name descname"><span class="pre">t2</span></span><a class="headerlink" href="#lcurve.Model.t2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.temp_disc">
+<span class="sig-name descname"><span class="pre">temp_disc</span></span><a class="headerlink" href="#lcurve.Model.temp_disc" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.temp_edge">
+<span class="sig-name descname"><span class="pre">temp_edge</span></span><a class="headerlink" href="#lcurve.Model.temp_edge" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.temp_spot">
+<span class="sig-name descname"><span class="pre">temp_spot</span></span><a class="headerlink" href="#lcurve.Model.temp_spot" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.texp_disc">
+<span class="sig-name descname"><span class="pre">texp_disc</span></span><a class="headerlink" href="#lcurve.Model.texp_disc" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.third">
+<span class="sig-name descname"><span class="pre">third</span></span><a class="headerlink" href="#lcurve.Model.third" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.tilt_spot">
+<span class="sig-name descname"><span class="pre">tilt_spot</span></span><a class="headerlink" href="#lcurve.Model.tilt_spot" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lcurve.Model.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#lcurve.Model.to_dict" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.tperiod">
+<span class="sig-name descname"><span class="pre">tperiod</span></span><a class="headerlink" href="#lcurve.Model.tperiod" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.uesp_lathw">
+<span class="sig-name descname"><span class="pre">uesp_lathw</span></span><a class="headerlink" href="#lcurve.Model.uesp_lathw" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.uesp_long1">
+<span class="sig-name descname"><span class="pre">uesp_long1</span></span><a class="headerlink" href="#lcurve.Model.uesp_long1" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.uesp_long2">
+<span class="sig-name descname"><span class="pre">uesp_long2</span></span><a class="headerlink" href="#lcurve.Model.uesp_long2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.uesp_taper">
+<span class="sig-name descname"><span class="pre">uesp_taper</span></span><a class="headerlink" href="#lcurve.Model.uesp_taper" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.uesp_temp">
+<span class="sig-name descname"><span class="pre">uesp_temp</span></span><a class="headerlink" href="#lcurve.Model.uesp_temp" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lcurve.Model.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lcurve.Model.update" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.use_radii">
+<span class="sig-name descname"><span class="pre">use_radii</span></span><a class="headerlink" href="#lcurve.Model.use_radii" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.velocity_scale">
+<span class="sig-name descname"><span class="pre">velocity_scale</span></span><a class="headerlink" href="#lcurve.Model.velocity_scale" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.wavelength">
+<span class="sig-name descname"><span class="pre">wavelength</span></span><a class="headerlink" href="#lcurve.Model.wavelength" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lcurve.Model.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lcurve.Model.write" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Model.yaw_spot">
+<span class="sig-name descname"><span class="pre">yaw_spot</span></span><a class="headerlink" href="#lcurve.Model.yaw_spot" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lcurve.Pparam">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">lcurve.</span></span><span class="sig-name descname"><span class="pre">Pparam</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dstep</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">defined</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lcurve.Pparam" title="Link to this definition">#</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Pparam.defined">
+<span class="sig-name descname"><span class="pre">defined</span></span><a class="headerlink" href="#lcurve.Pparam.defined" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Pparam.dstep">
+<span class="sig-name descname"><span class="pre">dstep</span></span><a class="headerlink" href="#lcurve.Pparam.dstep" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Pparam.range">
+<span class="sig-name descname"><span class="pre">range</span></span><a class="headerlink" href="#lcurve.Pparam.range" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Pparam.value">
+<span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#lcurve.Pparam.value" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lcurve.Pparam.vary">
+<span class="sig-name descname"><span class="pre">vary</span></span><a class="headerlink" href="#lcurve.Pparam.vary" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../development/contributing.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Contributing to lcurve</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.BinaryModel"><code class="docutils literal notranslate"><span class="pre">BinaryModel</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.BinaryModel.bright_spot_grid"><code class="docutils literal notranslate"><span class="pre">BinaryModel.bright_spot_grid</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.BinaryModel.compute_light_curve"><code class="docutils literal notranslate"><span class="pre">BinaryModel.compute_light_curve()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.BinaryModel.disc_edge_grid"><code class="docutils literal notranslate"><span class="pre">BinaryModel.disc_edge_grid</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.BinaryModel.disc_grid"><code class="docutils literal notranslate"><span class="pre">BinaryModel.disc_grid</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.BinaryModel.from_file"><code class="docutils literal notranslate"><span class="pre">BinaryModel.from_file()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.BinaryModel.from_model"><code class="docutils literal notranslate"><span class="pre">BinaryModel.from_model()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.BinaryModel.model"><code class="docutils literal notranslate"><span class="pre">BinaryModel.model</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.BinaryModel.star1_coarse_grid"><code class="docutils literal notranslate"><span class="pre">BinaryModel.star1_coarse_grid</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.BinaryModel.star1_fine_grid"><code class="docutils literal notranslate"><span class="pre">BinaryModel.star1_fine_grid</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.BinaryModel.star2_coarse_grid"><code class="docutils literal notranslate"><span class="pre">BinaryModel.star2_coarse_grid</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.BinaryModel.star2_fine_grid"><code class="docutils literal notranslate"><span class="pre">BinaryModel.star2_fine_grid</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.BinaryModel.update"><code class="docutils literal notranslate"><span class="pre">BinaryModel.update()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Grid"><code class="docutils literal notranslate"><span class="pre">Grid</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Grid.area"><code class="docutils literal notranslate"><span class="pre">Grid.area()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Grid.flux"><code class="docutils literal notranslate"><span class="pre">Grid.flux()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Grid.gravity"><code class="docutils literal notranslate"><span class="pre">Grid.gravity()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Grid.points"><code class="docutils literal notranslate"><span class="pre">Grid.points</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Grid.project_2d"><code class="docutils literal notranslate"><span class="pre">Grid.project_2d()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Grid.temperature"><code class="docutils literal notranslate"><span class="pre">Grid.temperature()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.LDCType"><code class="docutils literal notranslate"><span class="pre">LDCType</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.LDCType.Claret"><code class="docutils literal notranslate"><span class="pre">LDCType.Claret</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.LDCType.Poly"><code class="docutils literal notranslate"><span class="pre">LDCType.Poly</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model"><code class="docutils literal notranslate"><span class="pre">Model</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.absorb"><code class="docutils literal notranslate"><span class="pre">Model.absorb</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.absorb_edge"><code class="docutils literal notranslate"><span class="pre">Model.absorb_edge</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.add_disc"><code class="docutils literal notranslate"><span class="pre">Model.add_disc</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.add_spot"><code class="docutils literal notranslate"><span class="pre">Model.add_spot</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.angle_spot"><code class="docutils literal notranslate"><span class="pre">Model.angle_spot</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.beam_factor1"><code class="docutils literal notranslate"><span class="pre">Model.beam_factor1</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.beam_factor2"><code class="docutils literal notranslate"><span class="pre">Model.beam_factor2</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.beta_disc"><code class="docutils literal notranslate"><span class="pre">Model.beta_disc</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.cfrac_spot"><code class="docutils literal notranslate"><span class="pre">Model.cfrac_spot</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.cphi3"><code class="docutils literal notranslate"><span class="pre">Model.cphi3</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.cphi4"><code class="docutils literal notranslate"><span class="pre">Model.cphi4</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.cube"><code class="docutils literal notranslate"><span class="pre">Model.cube</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.delta_phase"><code class="docutils literal notranslate"><span class="pre">Model.delta_phase</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.deltat"><code class="docutils literal notranslate"><span class="pre">Model.deltat</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.eclipse1"><code class="docutils literal notranslate"><span class="pre">Model.eclipse1</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.eclipse2"><code class="docutils literal notranslate"><span class="pre">Model.eclipse2</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.epow_spot"><code class="docutils literal notranslate"><span class="pre">Model.epow_spot</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.expon_spot"><code class="docutils literal notranslate"><span class="pre">Model.expon_spot</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.from_file"><code class="docutils literal notranslate"><span class="pre">Model.from_file()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.gdark_bolom1"><code class="docutils literal notranslate"><span class="pre">Model.gdark_bolom1</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.gdark_bolom2"><code class="docutils literal notranslate"><span class="pre">Model.gdark_bolom2</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.glens1"><code class="docutils literal notranslate"><span class="pre">Model.glens1</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.gravity_dark1"><code class="docutils literal notranslate"><span class="pre">Model.gravity_dark1</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.gravity_dark2"><code class="docutils literal notranslate"><span class="pre">Model.gravity_dark2</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.height_disc"><code class="docutils literal notranslate"><span class="pre">Model.height_disc</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.height_spot"><code class="docutils literal notranslate"><span class="pre">Model.height_spot</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.iangle"><code class="docutils literal notranslate"><span class="pre">Model.iangle</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.iscale"><code class="docutils literal notranslate"><span class="pre">Model.iscale</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.ldc1_1"><code class="docutils literal notranslate"><span class="pre">Model.ldc1_1</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.ldc1_2"><code class="docutils literal notranslate"><span class="pre">Model.ldc1_2</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.ldc1_3"><code class="docutils literal notranslate"><span class="pre">Model.ldc1_3</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.ldc1_4"><code class="docutils literal notranslate"><span class="pre">Model.ldc1_4</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.ldc2_1"><code class="docutils literal notranslate"><span class="pre">Model.ldc2_1</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.ldc2_2"><code class="docutils literal notranslate"><span class="pre">Model.ldc2_2</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.ldc2_3"><code class="docutils literal notranslate"><span class="pre">Model.ldc2_3</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.ldc2_4"><code class="docutils literal notranslate"><span class="pre">Model.ldc2_4</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.length_spot"><code class="docutils literal notranslate"><span class="pre">Model.length_spot</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.lfudge"><code class="docutils literal notranslate"><span class="pre">Model.lfudge</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.lhi"><code class="docutils literal notranslate"><span class="pre">Model.lhi</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.limb1"><code class="docutils literal notranslate"><span class="pre">Model.limb1</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.limb2"><code class="docutils literal notranslate"><span class="pre">Model.limb2</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.lin_limb_disc"><code class="docutils literal notranslate"><span class="pre">Model.lin_limb_disc</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.llo"><code class="docutils literal notranslate"><span class="pre">Model.llo</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.mirror"><code class="docutils literal notranslate"><span class="pre">Model.mirror</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.mucrit1"><code class="docutils literal notranslate"><span class="pre">Model.mucrit1</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.mucrit2"><code class="docutils literal notranslate"><span class="pre">Model.mucrit2</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.nlat1c"><code class="docutils literal notranslate"><span class="pre">Model.nlat1c</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.nlat1f"><code class="docutils literal notranslate"><span class="pre">Model.nlat1f</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.nlat2c"><code class="docutils literal notranslate"><span class="pre">Model.nlat2c</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.nlat2f"><code class="docutils literal notranslate"><span class="pre">Model.nlat2f</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.nlatfill"><code class="docutils literal notranslate"><span class="pre">Model.nlatfill</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.nlngfill"><code class="docutils literal notranslate"><span class="pre">Model.nlngfill</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.npole"><code class="docutils literal notranslate"><span class="pre">Model.npole</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.nrad"><code class="docutils literal notranslate"><span class="pre">Model.nrad</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.nspot"><code class="docutils literal notranslate"><span class="pre">Model.nspot</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.opaque"><code class="docutils literal notranslate"><span class="pre">Model.opaque</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.pdot"><code class="docutils literal notranslate"><span class="pre">Model.pdot</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.period"><code class="docutils literal notranslate"><span class="pre">Model.period</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.phase1"><code class="docutils literal notranslate"><span class="pre">Model.phase1</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.phase2"><code class="docutils literal notranslate"><span class="pre">Model.phase2</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.q"><code class="docutils literal notranslate"><span class="pre">Model.q</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.quad"><code class="docutils literal notranslate"><span class="pre">Model.quad</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.quad_limb_disc"><code class="docutils literal notranslate"><span class="pre">Model.quad_limb_disc</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.r1"><code class="docutils literal notranslate"><span class="pre">Model.r1</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.r2"><code class="docutils literal notranslate"><span class="pre">Model.r2</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.radius_spot"><code class="docutils literal notranslate"><span class="pre">Model.radius_spot</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.rdisc1"><code class="docutils literal notranslate"><span class="pre">Model.rdisc1</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.rdisc2"><code class="docutils literal notranslate"><span class="pre">Model.rdisc2</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.roche1"><code class="docutils literal notranslate"><span class="pre">Model.roche1</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.roche2"><code class="docutils literal notranslate"><span class="pre">Model.roche2</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.slope"><code class="docutils literal notranslate"><span class="pre">Model.slope</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.spin1"><code class="docutils literal notranslate"><span class="pre">Model.spin1</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.spin2"><code class="docutils literal notranslate"><span class="pre">Model.spin2</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.stsp11_fwhm"><code class="docutils literal notranslate"><span class="pre">Model.stsp11_fwhm</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.stsp11_lat"><code class="docutils literal notranslate"><span class="pre">Model.stsp11_lat</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.stsp11_long"><code class="docutils literal notranslate"><span class="pre">Model.stsp11_long</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.stsp11_tcen"><code class="docutils literal notranslate"><span class="pre">Model.stsp11_tcen</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.stsp12_fwhm"><code class="docutils literal notranslate"><span class="pre">Model.stsp12_fwhm</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.stsp12_lat"><code class="docutils literal notranslate"><span class="pre">Model.stsp12_lat</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.stsp12_long"><code class="docutils literal notranslate"><span class="pre">Model.stsp12_long</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.stsp12_tcen"><code class="docutils literal notranslate"><span class="pre">Model.stsp12_tcen</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.stsp13_fwhm"><code class="docutils literal notranslate"><span class="pre">Model.stsp13_fwhm</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.stsp13_lat"><code class="docutils literal notranslate"><span class="pre">Model.stsp13_lat</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.stsp13_long"><code class="docutils literal notranslate"><span class="pre">Model.stsp13_long</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.stsp13_tcen"><code class="docutils literal notranslate"><span class="pre">Model.stsp13_tcen</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.stsp21_fwhm"><code class="docutils literal notranslate"><span class="pre">Model.stsp21_fwhm</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.stsp21_lat"><code class="docutils literal notranslate"><span class="pre">Model.stsp21_lat</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.stsp21_long"><code class="docutils literal notranslate"><span class="pre">Model.stsp21_long</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.stsp21_tcen"><code class="docutils literal notranslate"><span class="pre">Model.stsp21_tcen</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.stsp22_fwhm"><code class="docutils literal notranslate"><span class="pre">Model.stsp22_fwhm</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.stsp22_lat"><code class="docutils literal notranslate"><span class="pre">Model.stsp22_lat</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.stsp22_long"><code class="docutils literal notranslate"><span class="pre">Model.stsp22_long</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.stsp22_tcen"><code class="docutils literal notranslate"><span class="pre">Model.stsp22_tcen</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.t0"><code class="docutils literal notranslate"><span class="pre">Model.t0</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.t1"><code class="docutils literal notranslate"><span class="pre">Model.t1</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.t2"><code class="docutils literal notranslate"><span class="pre">Model.t2</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.temp_disc"><code class="docutils literal notranslate"><span class="pre">Model.temp_disc</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.temp_edge"><code class="docutils literal notranslate"><span class="pre">Model.temp_edge</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.temp_spot"><code class="docutils literal notranslate"><span class="pre">Model.temp_spot</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.texp_disc"><code class="docutils literal notranslate"><span class="pre">Model.texp_disc</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.third"><code class="docutils literal notranslate"><span class="pre">Model.third</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.tilt_spot"><code class="docutils literal notranslate"><span class="pre">Model.tilt_spot</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.to_dict"><code class="docutils literal notranslate"><span class="pre">Model.to_dict()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.tperiod"><code class="docutils literal notranslate"><span class="pre">Model.tperiod</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.uesp_lathw"><code class="docutils literal notranslate"><span class="pre">Model.uesp_lathw</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.uesp_long1"><code class="docutils literal notranslate"><span class="pre">Model.uesp_long1</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.uesp_long2"><code class="docutils literal notranslate"><span class="pre">Model.uesp_long2</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.uesp_taper"><code class="docutils literal notranslate"><span class="pre">Model.uesp_taper</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.uesp_temp"><code class="docutils literal notranslate"><span class="pre">Model.uesp_temp</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.update"><code class="docutils literal notranslate"><span class="pre">Model.update()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.use_radii"><code class="docutils literal notranslate"><span class="pre">Model.use_radii</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.velocity_scale"><code class="docutils literal notranslate"><span class="pre">Model.velocity_scale</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.wavelength"><code class="docutils literal notranslate"><span class="pre">Model.wavelength</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.write"><code class="docutils literal notranslate"><span class="pre">Model.write()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Model.yaw_spot"><code class="docutils literal notranslate"><span class="pre">Model.yaw_spot</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Pparam"><code class="docutils literal notranslate"><span class="pre">Pparam</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Pparam.defined"><code class="docutils literal notranslate"><span class="pre">Pparam.defined</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Pparam.dstep"><code class="docutils literal notranslate"><span class="pre">Pparam.dstep</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Pparam.range"><code class="docutils literal notranslate"><span class="pre">Pparam.range</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Pparam.value"><code class="docutils literal notranslate"><span class="pre">Pparam.value</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lcurve.Pparam.vary"><code class="docutils literal notranslate"><span class="pre">Pparam.vary</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/api/index.md.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, Alex Brown.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
