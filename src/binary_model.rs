@@ -10,7 +10,9 @@ use crate::set_disc_continuum::{set_disc_continuum, set_edge_continuum};
 use crate::set_disc_grid::{set_disc_edge_grid, set_disc_grid};
 use crate::set_star_continuum::set_star_continuum;
 use crate::set_star_grid::set_star_grid;
-use numpy::{IntoPyArray, PyArray1, PyReadonlyArray1};
+use crate::visualize::{self, RenderOptions};
+use ndarray::{Array2, Array3};
+use numpy::{IntoPyArray, PyArray1, PyArray2, PyArray3, PyReadonlyArray1};
 use pyo3::prelude::*;
 use pyo3::types::{PyDict, PyDictMethods};
 use rayon::prelude::*;
@@ -20,6 +22,7 @@ use roche::{self, Etype, Star, disc_eclipse};
 use serde_pyobject::from_pyobject;
 use std::collections::HashMap;
 use std::f64::consts::TAU;
+use std::path::PathBuf;
 
 #[pyclass]
 pub struct LightCurve {
@@ -432,6 +435,196 @@ impl BinaryModel {
             chi2: chisq,
             log_prob,
         })
+    }
+
+    ///
+    /// Render the system at a single orbital phase, projected onto the
+    /// plane of the sky, in the style of the original LCURVE `visualise`
+    /// program. Returns the image as a (height, width, 3) uint8 numpy
+    /// array; if `path` is given the image is also written there as a PNG.
+    ///
+    /// Keyword arguments:
+    ///     width: image width in pixels (default 800).
+    ///     height: image height in pixels; derived from the aspect ratio
+    ///         of the plot limits when omitted.
+    ///     x1, x2, y1, y2: sky-plane plot limits in units of the binary
+    ///         separation (defaults -2, 2, -2, 2).
+    ///     reverse: white background with dark colours if True (default),
+    ///         black background with bright colours if False.
+    ///     sdob: swap the colours of the two stars (default False).
+    ///     path: optional filename for a PNG copy of the frame.
+    ///
+    #[pyo3(signature = (
+        phase,
+        *,
+        width=800,
+        height=None,
+        x1=-2.0,
+        x2=2.0,
+        y1=-2.0,
+        y2=2.0,
+        reverse=true,
+        sdob=false,
+        path=None,
+    ))]
+    #[allow(clippy::too_many_arguments)]
+    pub fn render_frame(
+        &self,
+        py: Python,
+        phase: f64,
+        width: usize,
+        height: Option<usize>,
+        x1: f64,
+        x2: f64,
+        y1: f64,
+        y2: f64,
+        reverse: bool,
+        sdob: bool,
+        path: Option<PathBuf>,
+    ) -> PyResult<Py<PyArray3<u8>>> {
+        let options = RenderOptions::new(width, height, x1, x2, y1, y2, reverse, sdob, false)?;
+        let rgb = py.detach(|| -> Result<Vec<u8>, RocheError> {
+            let scene = visualize::build_scene(
+                &self.model,
+                &self.star1_fine_grid,
+                &self.star2_fine_grid,
+                &self.disc_grid,
+            )?;
+            let buffer = visualize::render_frame_indexed(&scene, &options, phase);
+            if let Some(ref path) = path {
+                visualize::write_png(path, &buffer, &options)?;
+            }
+            Ok(visualize::indexed_to_rgb(&buffer, &options.palette()))
+        })?;
+        let array = Array3::from_shape_vec((options.height, options.width, 3), rgb)
+            .map_err(|e| pyo3::exceptions::PyRuntimeError::new_err(e.to_string()))?;
+        Ok(array.into_pyarray(py).unbind())
+    }
+
+    ///
+    /// Project the visible points of every model component onto the plane
+    /// of the sky at the given orbital phase, in units of the binary
+    /// separation relative to the centre of mass. Returns a dict mapping
+    /// "star1", "star2", "disc", "disc_edge_outer", "disc_edge_inner" and
+    /// "stream" to (n, 2) float64 numpy arrays of (x, y) sky coordinates
+    /// (empty for absent components), plus "bright_spot", which is either
+    /// None or a ((x, y), cosbs) tuple where cosbs sets the marker size in
+    /// the rendered frames. Useful for custom plotting, e.g. matplotlib.
+    ///
+    pub fn scene_points(&self, py: Python, phase: f64) -> PyResult<Py<PyDict>> {
+        let scene = visualize::build_scene(
+            &self.model,
+            &self.star1_fine_grid,
+            &self.star2_fine_grid,
+            &self.disc_grid,
+        )?;
+        let (star1, star2, disc, outer_edge, inner_edge, stream, spot) =
+            visualize::scene_points(&scene, phase);
+
+        let to_array = |points: Vec<[f64; 2]>| -> PyResult<Py<PyArray2<f64>>> {
+            let n = points.len();
+            let flat: Vec<f64> = points.into_iter().flatten().collect();
+            let array = Array2::from_shape_vec((n, 2), flat)
+                .map_err(|e| pyo3::exceptions::PyRuntimeError::new_err(e.to_string()))?;
+            Ok(array.into_pyarray(py).unbind())
+        };
+
+        let dict = PyDict::new(py);
+        dict.set_item("star1", to_array(star1)?)?;
+        dict.set_item("star2", to_array(star2)?)?;
+        dict.set_item("disc", to_array(disc)?)?;
+        dict.set_item("disc_edge_outer", to_array(outer_edge)?)?;
+        dict.set_item("disc_edge_inner", to_array(inner_edge)?)?;
+        dict.set_item("stream", to_array(stream)?)?;
+        dict.set_item("bright_spot", spot.map(|(xy, cosbs)| ((xy[0], xy[1]), cosbs)))?;
+        Ok(dict.unbind())
+    }
+
+    ///
+    /// Render an animation of the orbit between two phases and write it to
+    /// `path`. The format is chosen from the file extension: `.gif` is
+    /// encoded natively, `.mp4` requires the `ffmpeg` binary on the PATH.
+    /// Frames are rendered in parallel.
+    ///
+    /// Keyword arguments:
+    ///     phase1, phase2: first and last orbital phase (defaults 0 and 1).
+    ///     nphase: number of frames (default 300).
+    ///     fps: frames per second, 1 to 240 (default 25).
+    ///     width, height, x1, x2, y1, y2, reverse, sdob: as render_frame.
+    ///
+    #[pyo3(signature = (
+        path,
+        *,
+        phase1=0.0,
+        phase2=1.0,
+        nphase=300,
+        fps=25,
+        width=800,
+        height=None,
+        x1=-2.0,
+        x2=2.0,
+        y1=-2.0,
+        y2=2.0,
+        reverse=true,
+        sdob=false,
+    ))]
+    #[allow(clippy::too_many_arguments)]
+    pub fn render_animation(
+        &self,
+        py: Python,
+        path: PathBuf,
+        phase1: f64,
+        phase2: f64,
+        nphase: usize,
+        fps: usize,
+        width: usize,
+        height: Option<usize>,
+        x1: f64,
+        x2: f64,
+        y1: f64,
+        y2: f64,
+        reverse: bool,
+        sdob: bool,
+    ) -> PyResult<()> {
+        let extension = path
+            .extension()
+            .and_then(|e| e.to_str())
+            .map(str::to_ascii_lowercase);
+        let is_mp4 = match extension.as_deref() {
+            Some("gif") => false,
+            Some("mp4") => true,
+            _ => {
+                return Err(pyo3::exceptions::PyValueError::new_err(
+                    "path must end in .gif or .mp4",
+                ));
+            }
+        };
+        if nphase < 1 {
+            return Err(pyo3::exceptions::PyValueError::new_err(
+                "nphase must be at least 1",
+            ));
+        }
+        if !(1..=240).contains(&fps) {
+            return Err(pyo3::exceptions::PyValueError::new_err(
+                "fps must be between 1 and 240",
+            ));
+        }
+        let options = RenderOptions::new(width, height, x1, x2, y1, y2, reverse, sdob, is_mp4)?;
+        py.detach(|| -> Result<(), RocheError> {
+            let scene = visualize::build_scene(
+                &self.model,
+                &self.star1_fine_grid,
+                &self.star2_fine_grid,
+                &self.disc_grid,
+            )?;
+            let phases = visualize::phase_grid(phase1, phase2, nphase);
+            if is_mp4 {
+                visualize::write_mp4(&path, &scene, &options, &phases, fps)
+            } else {
+                visualize::write_gif(&path, &scene, &options, &phases, fps)
+            }
+        })?;
+        Ok(())
     }
 }
 
