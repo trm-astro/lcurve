@@ -20,6 +20,9 @@ pub mod set_star_grid;
 mod lcurve {
 
     #[pymodule_export]
+    use crate::binary_model::LightCurve;
+    
+    #[pymodule_export]
     use crate::binary_model::BinaryModel;
 
     #[pymodule_export]
