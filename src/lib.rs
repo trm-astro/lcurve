@@ -5,6 +5,7 @@ pub mod comp_gravity;
 pub mod comp_light;
 pub mod comp_radius;
 pub mod ginterp;
+pub mod grid;
 pub mod ldc;
 pub mod model;
 pub mod numface;
@@ -19,6 +20,9 @@ pub mod set_star_grid;
 mod lcurve {
 
     #[pymodule_export]
+    use crate::binary_model::LightCurve;
+    
+    #[pymodule_export]
     use crate::binary_model::BinaryModel;
 
     #[pymodule_export]
@@ -29,6 +33,9 @@ mod lcurve {
 
     #[pymodule_export]
     use crate::ldc::LDCType;
+  
+    #[pymodule_export]
+    use crate::grid::Grid;
     
     #[allow(non_upper_case_globals)]
     #[pymodule_export]

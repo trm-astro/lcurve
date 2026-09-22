@@ -1,7 +1,8 @@
+use crate::grid::Grid;
 use crate::model::Model;
 use roche::constants::DAY;
 use roche::errors::RocheError;
-use roche::{Point, RocheContext, Star, Vec3};
+use roche::{RocheContext, Star, Vec3};
 use std::f64::consts::TAU;
 
 //
@@ -14,7 +15,7 @@ use std::f64::consts::TAU;
 //  \return the value of logg
 //
 
-pub fn comp_gravity1(model: &Model, star1_fine_grid: &Vec<Point>) -> Result<f64, RocheError> {
+pub fn comp_gravity1(model: &Model, star1_fine_grid: &Grid) -> Result<f64, RocheError> {
     // Calculate the unit scaling factor to get CGS gravity
     let gm1m2: f64 = (1000.0 * model.velocity_scale.value).powi(3) * model.tperiod * DAY / TAU;
     let a: f64 = (gm1m2 / (TAU / DAY / model.tperiod).powi(2)).powf(1.0 / 3.0);
@@ -44,7 +45,7 @@ pub fn comp_gravity1(model: &Model, star1_fine_grid: &Vec<Point>) -> Result<f64,
     let mut sumf: f64 = 0.0;
 
     // Star 1
-    for point in star1_fine_grid {
+    for point in &star1_fine_grid.points {
         // flux has built-in area factor
         sumfg += (point.flux * point.gravity) as f64;
         sumf += point.flux as f64;
@@ -66,7 +67,7 @@ pub fn comp_gravity1(model: &Model, star1_fine_grid: &Vec<Point>) -> Result<f64,
 //  \return the value of logg
 //
 
-pub fn comp_gravity2(model: &Model, star2_fine_grid: &Vec<Point>) -> Result<f64, RocheError> {
+pub fn comp_gravity2(model: &Model, star2_fine_grid: &Grid) -> Result<f64, RocheError> {
     // Calculate the unit scaling factor to get CGS gravity
     let gm1m2: f64 = (1000.0 * model.velocity_scale.value).powi(3) * model.tperiod * DAY / TAU;
     let a: f64 = (gm1m2 / (TAU / DAY / model.tperiod).powi(2)).powf(1.0 / 3.0);
@@ -99,7 +100,7 @@ pub fn comp_gravity2(model: &Model, star2_fine_grid: &Vec<Point>) -> Result<f64,
     let mut sumf: f64 = 0.0;
 
     // Star 2
-    for point in star2_fine_grid {
+    for point in &star2_fine_grid.points {
         // flux has built-in area factor
         sumfg += (point.flux * point.gravity) as f64;
         sumf += point.flux as f64;

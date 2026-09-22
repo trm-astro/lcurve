@@ -1,3 +1,4 @@
+use crate::grid::Grid;
 use crate::model::Model;
 use crate::numface::numface;
 use rayon::prelude::*;
@@ -22,7 +23,7 @@ pub fn envelope(rangle: f64, lambda: f64, r1: f64) -> Xy {
     }
 }
 
-pub fn set_star_grid(model: &Model, star: Star, fine: bool) -> Result<Vec<Point>, RocheError> {
+pub fn set_star_grid(model: &Model, star: Star, fine: bool) -> Result<Grid, RocheError> {
     let (mut r1, mut r2) = model.get_r1r2();
 
     let eclipse: bool = match star {
@@ -166,7 +167,9 @@ pub fn set_star_grid(model: &Model, star: Star, fine: bool) -> Result<Vec<Point>
     let nface: u32 = numface(nlat, infill, thelo, thehi, nlatfill, nlngfill);
 
     // Generate arrays over the star's face
-    let mut star_grid: Vec<Point> = Vec::with_capacity(nface as usize);
+    let mut star_grid: Grid = Grid::new(
+        Vec::with_capacity(nface as usize)
+    );
 
     let acc: f64 = model.delta_phase / 10.0;
 
@@ -308,7 +311,7 @@ pub fn set_star_grid(model: &Model, star: Star, fine: bool) -> Result<Vec<Point>
 }
 
 pub fn add_faces(
-    star_grid: &mut Vec<Point>,
+    star_grid: &mut Grid,
     tlo: f64,
     thi: f64,
     dtheta: f64,
@@ -488,7 +491,7 @@ pub fn add_faces(
 
 
     for band in bands {
-        star_grid.extend(band);
+        star_grid.points.extend(band);
     }
 }
 

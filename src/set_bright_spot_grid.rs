@@ -1,3 +1,4 @@
+use crate::grid::Grid;
 use crate::model::Model;
 use crate::set_star_grid::star_eclipse;
 use roche::{self, Etype, Point, RocheContext, Star, Vec3, errors::RocheError};
@@ -22,7 +23,7 @@ use std::panic;
 // \exception Exceptions are thrown if the specified radii over-fill the Roche lobes.
 //
 
-pub fn set_bright_spot_grid(model: &Model) -> Result<Vec<Point>, RocheError> {
+pub fn set_bright_spot_grid(model: &Model) -> Result<Grid, RocheError> {
     let (mut r1, mut r2) = model.get_r1r2();
 
     let roche_context1 = RocheContext::new(model.q.value, Star::Primary, model.spin1.value)?;
@@ -152,5 +153,5 @@ pub fn set_bright_spot_grid(model: &Model) -> Result<Vec<Point>, RocheError> {
             flux: flux_parallel,
         };
     }
-    Ok(bright_spot_grid)
+    Ok(Grid::new(bright_spot_grid))
 }
