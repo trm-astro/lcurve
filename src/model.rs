@@ -340,226 +340,470 @@ impl ModelUpdate {
 #[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 #[serde(default)]
 pub struct Model {
+    /// Mass ratio, q = M2/M1
     #[pyo3(get)]
     pub q: Pparam,
+    /// Inclination angle, degrees
     #[pyo3(get)]
     pub iangle: Pparam,
+    /// Radius of star 1, scaled by the binary separation
     #[pyo3(get)]
     pub r1: Pparam,
+    /// Radius of star 2, scaled by the binary separation. The radius is measured along the line of centres towards star 1. Set = -1 and hold fixed for Roche lobe filling stars.
     #[pyo3(get)]
     pub r2: Pparam,
+    /// Third contact phase (star 1 starting to emerge from eclipse).
+    /// This is an alternative way to specify the radii, based on a spherical
+    /// approximation for the two stars, i.e. unless the stars are spherical,
+    /// it is not quite the true third contact. The radii will be computed from
+    /// the contact phases according to the two equations
+    /// r2+r1 = sqrt(1 - sin^2 i cos^2 (2*pi*cphi4)) and
+    /// r2-r1 = sqrt(1 - sin^2 i cos^2 (2*pi*cphi3)). The radii returned are
+    /// precise, just the interpretation as contact phases that is not precise.
+    /// cphi3 and cphi4 need the boolean use_radii set to 0 to enabled.
+    /// The reason for using them is to help with MCMC iterations as they
+    /// prevent the nasty curved correlation between r1, r2 and i. This can
+    /// save a huge amount of CPU time.
     #[pyo3(get)]
     pub cphi3: Pparam,
+    /// Fourth contact phase, star 1 fully emerged from eclipse. See cphi3 for details.
     #[pyo3(get)]
     pub cphi4: Pparam,
+    /// This is the ratio of the spin frequency of star 1 to the orbital frequency. In this case a modified form of the Roche potential is used for star 1
     #[pyo3(get)]
     pub spin1: Pparam,
+    /// This is the ratio of the spin frequency of star 2 to the orbital frequency. In this case a modified form of the Roche potential is used for star 2
     #[pyo3(get)]
     pub spin2: Pparam,
+    /// Temperature of star 1, Kelvin. This is really a substitute for surface
+    /// brightness which is set assuming a black-body given this parameter.
+    /// If it was not for irradiation that would be exactly what this is, a
+    /// one-to-one replacement for surface brightness. Irradiation however
+    /// introduces bolometric luminosities effectively and breaks the direct
+    /// link. Some would then argue that one must use model atmospheres except
+    /// at the moment irradiated model atmosphere are in their infancy.
     #[pyo3(get)]
     pub t1: Pparam,
+    /// Temperature of star 2, Kelvin.
     #[pyo3(get)]
     pub t2: Pparam,
+    /// Limb darkening coefficient 1 for star 1
     #[pyo3(get)]
     pub ldc1_1: Pparam,
+    /// Limb darkening coefficient 2 for star 1
     #[pyo3(get)]
     pub ldc1_2: Pparam,
+    /// Limb darkening coefficient 3 for star 1
     #[pyo3(get)]
     pub ldc1_3: Pparam,
+    /// Limb darkening coefficient 4 for star 1
     #[pyo3(get)]
     pub ldc1_4: Pparam,
+    /// Limb darkening coefficient 1 for star 2
     #[pyo3(get)]
     pub ldc2_1: Pparam,
+    
+    /// Limb darkening coefficient 2 for star 2
     #[pyo3(get)]
     pub ldc2_2: Pparam,
+
+    /// Limb darkening coefficient 3 for star 2
     #[pyo3(get)]
     pub ldc2_3: Pparam,
+
+    /// Limb darkening coefficient 4 for star 2
     #[pyo3(get)]
     pub ldc2_4: Pparam,
+
+    /// Velocity scale, sum of unprojected orbital speeds, used for accounting
+    /// for Doppler beaming and gravitational lensing. On its own this makes
+    /// little difference to the light curve, so you should not usually let it
+    /// be free, but you might want to if you have independent K1 or K2
+    /// information which you can apply as part of a prior.
     #[pyo3(get)]
     pub velocity_scale: Pparam,
+
+    ///The factor to use for Doppler beaming from star 1. This corresponds to
+    /// the factor (3-alpha) that multiplies -v_r/c in the standard beaming
+    /// formula where alpha is related to the spectral shape. Use of this
+    /// parameter requires the velocity_scale to be set.
     #[pyo3(get)]
     pub beam_factor1: Pparam,
+
+    ///The factor to use for Doppler beaming from star 2. This corresponds to
+    /// the factor (3-alpha) that multiplies -v_r/c in the standard beaming
+    /// formula where alpha is related to the spectral shape. Use of this
+    /// parameter requires the velocity_scale to be set.
     #[pyo3(get)]
     pub beam_factor2: Pparam,
+
+    /// Zero point of ephemeris, marking time of mid-eclipse (or in general
+    /// superior conjunction) of star 1, same units as times.
     #[pyo3(get)]
     pub t0: Pparam,
+
+    /// Orbital period, same units as times.
     #[pyo3(get)]
     pub period: Pparam,
+
+    /// Quadratic coefficient of ephemeris, same units as times
     #[pyo3(get)]
     pub pdot: Pparam,
+
+    /// Time shift between the primary and secondary eclipses to allow for
+    /// small eccentricities and Roemer delays in the orbit. The sign is
+    /// defined such that deltat > 0 implies that the secondary eclipse suffers
+    /// a delay compared to the primary compared to precisely 0.5 difference.
+    /// deltat < 0 implies the secondary eclipse comes a little earlier than
+    /// expected. Assuming that the "primary eclipse" is the eclipse of star 1,
+    /// then, using the same sign convention, the Roemer delay is given by
+    /// P*(K1-K2)/(Pi*c) where P is the orbital period, K1 and K2 are the usual
+    /// projected radial velocity semi-amplitudes Pi = 3.14159.., and
+    /// c = speed of light. See Kaplan (2010) for more details.
+    /// The delay is implemented by adjusting the orbital phase according
+    /// to phi' = phi + (deltat/2/P)*(cos(2*Pi*phi)-1), i.e. there is no change
+    /// at primary eclipse but a delay of -deltat/P by the secondary eclipse.
     #[pyo3(get)]
     pub deltat: Pparam,
+
+    /// Gravity darkening coefficient. Only matters for the Roche distorted
+    /// case, but is prompted for always. There are two alternatives for this.
+    /// In the standard old method, the temperatures on the stars are set equal
+    /// to t1*(g/gr)**gdark where g is the gravity at a given point and gr is
+    /// the gravity at the point furthest from the primary (the 'backside' of
+    /// the secondary). For a convectuive atmosphere, 0.08 is the usual value
+    /// while 0.25 is the number for a radiative atmosphere. This is translated
+    /// into intensity using a blackbody approx. If you want to bypass the BB
+    /// approx and invoke a direct relation flux ~ (g/gr)**gdark relation you
+    /// should set gdark_bolom (see below) to False.
     #[pyo3(get)]
     pub gravity_dark1: Pparam,
+
+    /// Same as for gravity_dark1 but for the secondary star.
     #[pyo3(get)]
     pub gravity_dark2: Pparam,
+
+    /// The fraction of the irradiating flux from star 1 absorbed by star 2
     #[pyo3(get)]
     pub absorb: Pparam,
+    
     #[pyo3(get)]
     pub slope: Pparam,
+    
     #[pyo3(get)]
     pub quad: Pparam,
+    
     #[pyo3(get)]
     pub cube: Pparam,
+    
     #[pyo3(get)]
     pub third: Pparam,
+    /// Inner radius of azimuthally symmetric disc. Set = -1 to set it equal
+    /// to r1
     #[pyo3(get)]
     pub rdisc1: Pparam,
+    /// Outer radius of azimuthally symmetric disc. Set = -1 and hold fixed to
+    /// clamp this to equal the bright spot radius.
     #[pyo3(get)]
     pub rdisc2: Pparam,
+    /// Half height of disc at radius = 1. The height varies as a power
+    /// law of radius
     #[pyo3(get)]
     pub height_disc: Pparam,
+    /// Exponent of power law in radius of disc. Should be >= 1 to make concave
+    /// disc; convex will not eclipse properly.
     #[pyo3(get)]
     pub beta_disc: Pparam,
+    /// Temperature of outer part of disc. This is little more than a flux
+    /// normalisation parameter but it is easier to think in terms of temperature
     #[pyo3(get)]
     pub temp_disc: Pparam,
+    /// Exponent of surface brightness (NB: not temperature) over disc
     #[pyo3(get)]
     pub texp_disc: Pparam,
+    /// Linear limb darkening coefficient of the disc
     #[pyo3(get)]
     pub lin_limb_disc: Pparam,
+    /// Quadratic limb darkening coefficient of the disc
     #[pyo3(get)]
     pub quad_limb_disc: Pparam,
+    /// Temperature at perpendicular edge of disc. Irradiation from the
+    /// secondary is allowed so you should think of a bright rim at primary
+    /// eclipse. Limb darkening parameters of the disc are applied
     #[pyo3(get)]
     pub temp_edge: Pparam,
+    /// Amount of secondary flux absorbed and reprocessed. This effect should
+    /// lead to a sinusoidal variation with flux maximum at orbital phase 0.5.
+    /// It was introduced to model a possible accreting sdO/WD system discovered
+    /// by Thomas Kupfer
     #[pyo3(get)]
     pub absorb_edge: Pparam,
+    /// Distance from accretor of bright-spot (units of binary separation).
     #[pyo3(get)]
     pub radius_spot: Pparam,
+    /// Length scale of spot (units of binary separation).
     #[pyo3(get)]
     pub length_spot: Pparam,
+    /// Height of spot (units of binary separation). This is only a
+    /// normalisation constant.
     #[pyo3(get)]
     pub height_spot: Pparam,
+    /// Spot is modeled as x^{n} \exp(-(x/l)^{m}). This parameter specifies the exponent 'n'
     #[pyo3(get)]
     pub expon_spot: Pparam,
+    /// This is the exponent m in the above expression
     #[pyo3(get)]
     pub epow_spot: Pparam,
+    /// This is the angle made by the line of elements of the spot measured in
+    /// the direction of binary motion relative to the rim of the disc so that
+    /// the "standard" value should be 0.
     #[pyo3(get)]
     pub angle_spot: Pparam,
+    /// Allows the spot elements effectively to beam their light away from the
+    /// perpendicular to the line of elements. Measured as an angle in the same
+    /// sense as angle_spot. 0 means standard perpendicular beaming.
     #[pyo3(get)]
     pub yaw_spot: Pparam,
+    /// Normalises the surface brightness of the spot.
     #[pyo3(get)]
     pub temp_spot: Pparam,
+    /// Allows spot to be other than perpendicular to the disc.
+    /// 90 = perpendicular. If less than 90 then the spot is visible for more
+    /// than half a cycle.
     #[pyo3(get)]
     pub tilt_spot: Pparam,
+    /// The fraction of the spot taken to be equally visible at all phases,
+    /// i.e. pointing upwards.
     #[pyo3(get)]
     pub cfrac_spot: Pparam,
+    /// Longitude (degrees) of spot 1 on star 1, relative to meridian defined
+    /// by line of centres
     #[pyo3(get)]
     pub stsp11_long: Pparam,
+    /// Latitude (degrees) of spot 1 on star 1
     #[pyo3(get)]
     pub stsp11_lat: Pparam,
+    /// FWHM (degrees) of spot 1 on star 1, as seen from its centre of mass.
+    /// Spot has gaussian distribution of temperature.
     #[pyo3(get)]
     pub stsp11_fwhm: Pparam,
+    /// Central temp (K) of spot 1 on star 1
     #[pyo3(get)]
     pub stsp11_tcen: Pparam,
+    /// Longitude (degrees) of spot 2 on star 1, relative to meridian defined
+    /// by line of centres
     #[pyo3(get)]
     pub stsp12_long: Pparam,
+    /// Latitude (degrees) of spot 2 on star 1
     #[pyo3(get)]
     pub stsp12_lat: Pparam,
+    /// FWHM (degrees) of spot 2 on star 1, as seen from its centre of mass.
+    /// Spot has gaussian distribution of temperature.
     #[pyo3(get)]
     pub stsp12_fwhm: Pparam,
+    /// Central temp (K) of spot 2 on star 1
     #[pyo3(get)]
     pub stsp12_tcen: Pparam,
+    /// Longitude (degrees) of spot 3 on star 1, relative to meridian defined
+    /// by line of centres
     #[pyo3(get)]
     pub stsp13_long: Pparam,
+    /// Latitude (degrees) of spot 3 on star 1
     #[pyo3(get)]
     pub stsp13_lat: Pparam,
+    /// FWHM (degrees) of spot 3 on star 1, as seen from its centre of mass.
+    /// Spot has gaussian distribution of temperature.
     #[pyo3(get)]
     pub stsp13_fwhm: Pparam,
+    /// Central temp (K) of spot 3 on star 1
     #[pyo3(get)]
     pub stsp13_tcen: Pparam,
+    /// Longitude (degrees) of spot 1 on star 2, relative to meridian defined
+    /// by line of centres
     #[pyo3(get)]
     pub stsp21_long: Pparam,
+    /// Latitude (degrees) of spot 1 on star 2
     #[pyo3(get)]
     pub stsp21_lat: Pparam,
+    /// FWHM (degrees) of spot 1 on star 2, as seen from its centre of mass.
+    /// Spot has gaussian distribution of temperature.
     #[pyo3(get)]
     pub stsp21_fwhm: Pparam,
+    /// Central temp (K) of spot 1 on star 2
     #[pyo3(get)]
     pub stsp21_tcen: Pparam,
+    /// Longitude (degrees) of spot 2 on star 2, relative to meridian defined
+    /// by line of centres
     #[pyo3(get)]
     pub stsp22_long: Pparam,
+    /// Latitude (degrees) of spot 2 on star 2
     #[pyo3(get)]
     pub stsp22_lat: Pparam,
+    /// FWHM (degrees) of spot 2 on star 2, as seen from its centre of mass.
+    /// Spot has gaussian distribution of temperature.
     #[pyo3(get)]
     pub stsp22_fwhm: Pparam,
+    /// Central temp (K) of spot 2 on star 2
     #[pyo3(get)]
     pub stsp22_tcen: Pparam,
+    
     #[pyo3(get)]
     pub uesp_long1: Pparam,
+    
     #[pyo3(get)]
     pub uesp_long2: Pparam,
+    
     #[pyo3(get)]
     pub uesp_lathw: Pparam,
+    
     #[pyo3(get)]
     pub uesp_taper: Pparam,
+    
     #[pyo3(get)]
     pub uesp_temp: Pparam,
+    /// Accuracy in phase of eclipse computations. This determines the accuracy
+    /// of any Roche computations. Example: 1.e-7
     #[pyo3(get)]
     pub delta_phase: f64,
+    /// The number of latitudes for star 1's fine grid. This is used around the
+    /// phase of primary eclipse (i.e. the eclipse of star 1
     #[pyo3(get)]
     pub nlat1f: u32,
+    /// The number of latitudes for star 2's fine grid. This is used around the
+    /// phase of secondary eclipse.
     #[pyo3(get)]
     pub nlat2f: u32,
+    /// The number of latitudes for star 1's coarse grid. This is used away
+    /// from primary eclipse.
     #[pyo3(get)]
     pub nlat1c: u32,
+    /// The number of latitudes for star 2's coarse grid. This is used away
+    /// from secondary eclipse.
     #[pyo3(get)]
     pub nlat2c: u32,
+    /// True to set North pole of grid to the genuine stellar NP rather than
+    /// substellar points. This is probably a good idea when modelling
+    /// well-detached binaries, especially with extreme radius ratios because
+    /// then it allows one to concentrate points over a band of latitudes using
+    /// the next two parameters
     #[pyo3(get)]
     pub npole: bool,
+    /// Extra number of points to insert per normal latitude strip along the path of star 1 as it transits star 2.
+    /// This is designed to help tough extreme radius ratio cases. Take care to
+    /// look at the resulting grid with visualise as the exact latitude range
+    /// chosen is a little approximate. This is only enabled if npole since only
+    /// then do the latitude strips more-or-less line up with the movement of
+    /// the star.
     #[pyo3(get)]
     pub nlatfill: u32,
+    /// Extra number of points to insert per normal longitude strip along the
+    /// path of star 1 as it transits star 2. This is designed to help tough
+    /// extreme radius ratio cases. Take care to look at the resulting grid
+    /// with visualise as the exact latitude range chosen is a little approximate.
     #[pyo3(get)]
     pub nlngfill: u32,
+    /// The fine-grid latitude strip is computed assuming both stars are
+    /// spherical. To allow for departures from this, this parameter allows
+    /// one to increase the latitude limits both up and down by an amount
+    /// specified in degrees. Use the program visualise to judge how large this
+    /// should be. However, one typically would like to avoid lfudge > 30*r1/r2
+    /// as that could more than double the width of the strip.
     #[pyo3(get)]
     pub lfudge: f64,
     #[pyo3(get)]
     pub llo: f64,
+    
     #[pyo3(get)]
     pub lhi: f64,
+    
+    /// this defines when star 1's fine grid is used abs(phase) < phase1. Thus phase1 = 0.05 will restrict the fine
+    /// grid use to phase 0.95 to 0.05.
     #[pyo3(get)]
     pub phase1: f64,
+    /// this defines when star 2's fine grid is used phase2 until 1-phase2. Thus phase2 = 0.45 will restrict the fine
+    /// grid use to phase 0.55 to 0.55.
     #[pyo3(get)]
     pub phase2: f64,
+    /// Wavelength (nm)
     #[pyo3(get)]
     pub wavelength: f64,
+    /// Account for Roche distortion of star 1 or not
     #[pyo3(get)]
     pub roche1: bool,
+    /// Account for Roche distortion of star 2 or not
     #[pyo3(get)]
     pub roche2: bool,
+    /// Account for the eclipse of star 1 or not
     #[pyo3(get)]
     pub eclipse1: bool,
+    /// Account for the eclipse of star 2 or not
     #[pyo3(get)]
     pub eclipse2: bool,
+    /// Account for gravitational lensing by star 1. If you use this roche1
+    /// must be = 0 and the velocity_scale must be set
     #[pyo3(get)]
     pub glens1: bool,
+    /// If set = 1, the parameters r1 and r2 will be used to set the radii
+    /// directly. If not, the third and fourth contact phases, cphi3 and cphi4,
+    /// will be used instead (see description for cphi3 for details).
     #[pyo3(get)]
     pub use_radii: bool,
+    /// The true orbital period in days. This is required, along with velocity_scale, if gravitational lensing is being
+    /// applied to calculate proper dimensions in the system.
     #[pyo3(get)]
     pub tperiod: f64,
+    /// True if the gravity darkening coefficient represents the bolometric
+    /// value where T is proportional to gravity to the power set by the
+    /// coefficient. This is translated to flux variations using the black-body
+    /// approximation. If False, it represents a filter-integrated value 'y'
+    /// coefficient such that the flux depends upon the gravity to the power 'y'.
+    /// This is itself an approximation and ideally should replaced by a proper
+    /// function of gravity, but is probably good enough for most purposes.
+    /// Please see gravity_dark.
     #[pyo3(get)]
     pub gdark_bolom1: bool,
+    
     #[pyo3(get)]
     pub gdark_bolom2: bool,
+    /// Critical value of mu on star 1 below which intensity is assumed to be
+    /// zero. This is to allow one to represent Claret and Hauschildt's (2004)
+    /// results where I(mu) drops steeply for mu < 0.08 or so. WARNING: this
+    /// option is dangerous. I would normally advise setting it = 0 unless you
+    /// really know what you are doing as it leads to discontinuities.
     #[pyo3(get)]
     pub mucrit1: f64,
+    /// Critical value of mu on star 2 below which intensity is assumed to be
+    /// zero. See comments on mucrit1 for more.
     #[pyo3(get)]
     pub mucrit2: f64,
+    /// String, either 'Poly' or 'Claret' determining the type of limb darkening
+    /// law. See comments on ldc1_1 above.
     #[pyo3(get)]
     pub limb1: LDCType,
+    /// String, either 'Poly' or 'Claret' determining the type of limb darkening
+    /// law. See comments on ldc1_1 above.
     #[pyo3(get)]
     pub limb2: LDCType,
+    /// Add any light not reprocessed in as if star reflected it or not as a
+    /// crude approximation to the effet of gray scattering
     #[pyo3(get)]
     pub mirror: bool,
+    /// Add a disc or not
     #[pyo3(get)]
     pub add_disc: bool,
+    /// The number of radial strips over the disc
     #[pyo3(get)]
     pub nrad: u32,
+    /// Make disc opaque or not
     #[pyo3(get)]
     pub opaque: bool,
+    /// Add a bright spot or not
     #[pyo3(get)]
     pub add_spot: bool,
+    /// number of points on the bright spot grid
     #[pyo3(get)]
     pub nspot: u32,
+    
     #[pyo3(get)]
     pub iscale: bool,
 }
