@@ -15,6 +15,7 @@ pub mod set_disc_continuum;
 pub mod set_disc_grid;
 pub mod set_star_continuum;
 pub mod set_star_grid;
+pub mod visualize;
 
 #[pymodule]
 mod lcurve {
