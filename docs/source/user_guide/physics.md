@@ -41,4 +41,6 @@ The choice of law is set by the {py:attr}`limb1 <lcurve.Model.limb1>` and {py:at
 
 ## Doppler beaming
 
+Both doppler beaming and relativistic aberration are taken into account.
+
 ## Reflection effect

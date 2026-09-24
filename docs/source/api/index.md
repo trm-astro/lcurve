@@ -4,4 +4,5 @@
 .. automodule:: lcurve
    :members:
    :undoc-members:
+   :member-order: groupwise
 ```

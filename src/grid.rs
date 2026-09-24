@@ -10,6 +10,7 @@ use pyo3::prelude::*;
 #[pyclass(skip_from_py_object)]
 #[derive(Clone, Debug)]
 pub struct Grid {
+    /// the list of Points defining the grid.
     #[pyo3(get)]
     pub points: Vec<Point>,
 }
@@ -82,6 +83,21 @@ impl Grid {
 #[pymethods]
 impl Grid {
 
+    /// Returns a numpy array containing the areas of the points in the grid.
+    /// If phase is given then the array only contains the visible points at
+    /// that phase
+    /// 
+    /// Parameters
+    /// ----------
+    /// iangle : float
+    ///     the orbital inclination of the binary
+    /// phase : float, optional
+    ///     the orbital phase to use if masking array by visibility
+    /// 
+    /// Returns
+    /// -------
+    /// numpy array of areas
+    /// 
     #[pyo3(name="area", signature = (iangle, phase=None))]
     pub fn python_area(&self, py: Python, iangle: f64, phase: Option<f64>) -> Py<PyArray1<f32>> {
         
@@ -89,6 +105,21 @@ impl Grid {
         area.into_pyarray(py).unbind()
     }
 
+    /// Returns a numpy array containing the gravities of the points in the grid.
+    /// If phase is given then the array only contains the visible points at
+    /// that phase
+    ///
+    /// Parameters
+    /// ----------
+    /// iangle : float
+    ///     the orbital inclination of the binary
+    /// phase : float, optional
+    ///     the orbital phase to use if masking array by visibility
+    /// 
+    /// Returns
+    /// -------
+    /// numpy array of surface gravities
+    /// 
     #[pyo3(name="gravity", signature = (iangle, phase=None))]
     pub fn python_gravity(&self, py: Python, iangle: f64, phase: Option<f64>) -> Py<PyArray1<f32>> {
         
@@ -96,6 +127,21 @@ impl Grid {
         gravity.into_pyarray(py).unbind()
     }
 
+    /// Returns a numpy array containing the fluxes of the points in the grid.
+    /// If phase is given then the array only contains the visible points at
+    /// that phase
+    /// 
+    /// Parameters
+    /// ----------
+    /// iangle : float
+    ///     the orbital inclination of the binary
+    /// phase : float, optional
+    ///     the orbital phase to use if masking array by visibility
+    /// 
+    /// Returns
+    /// -------
+    /// numpy array of fluxes
+    /// 
     #[pyo3(name="flux", signature = (iangle, phase=None))]
     pub fn python_flux(&self, py: Python, iangle: f64, phase: Option<f64>) -> Py<PyArray1<f32>> {
         
@@ -103,6 +149,22 @@ impl Grid {
         flux.into_pyarray(py).unbind()
     }
 
+    /// Returns a numpy array containing the temperatures of the points in the
+    /// grid (after applying gravity darkening and reflection effect).
+    /// If phase is given then the array only contains the visible points
+    /// at that phase
+    /// 
+    /// Parameters
+    /// ----------
+    /// iangle : float
+    ///     the orbital inclination of the binary
+    /// phase : float, optional
+    ///     the orbital phase to use if masking array by visibility
+    /// 
+    /// Returns
+    /// -------
+    /// numpy array of lcurve temperatures
+    /// 
     #[pyo3(name="temperature", signature = (wavelength, iangle, phase=None))]
     pub fn python_temperature(&self, py: Python, wavelength: f64, iangle: f64, phase: Option<f64>) -> Py<PyArray1<f32>> {
         
@@ -114,12 +176,17 @@ impl Grid {
     /// Projects the grid onto a 2D plane as seen at the model inclination
     /// at the supplied phase with the binary centre of mass as the origin.
     /// 
-    /// Arguments
-    /// * `q` - Binary mass ratio M2/M1.
-    /// * `iangle` - Orbital inclination at which to project the grid.
-    /// * `phase` - Orbital phase at which to project the grid
+    /// Parameters
+    /// ----------
+    /// q : float
+    ///     Binary mass ratio M2/M1.
+    /// iangle : float
+    ///     Orbital inclination at which to project the grid.
+    /// phase : float
+    ///     Orbital phase at which to project the grid
     /// 
     /// Returns
+    /// -------
     /// (x, y) - Arrays of projected grid point positions
     /// 
     #[pyo3(signature = (q, iangle, phase))]

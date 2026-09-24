@@ -21,47 +21,62 @@ use serde_pyobject::from_pyobject;
 use std::collections::HashMap;
 use std::f64::consts::TAU;
 
+/// A class to hold the results of the light curve modelling
 #[pyclass]
 pub struct LightCurve {
+    /// Modelled flux from star 1
     #[pyo3(get)]
     pub star1: Py<PyArray1<f64>>,
 
+    /// Modelled flux from star 2
     #[pyo3(get)]
     pub star2: Py<PyArray1<f64>>,
 
+    /// Modelled flux from the disc
     #[pyo3(get)]
     pub disc: Py<PyArray1<f64>>,
 
+    /// Modelled flux from the disc edge
     #[pyo3(get)]
     pub disc_edge: Py<PyArray1<f64>>,
 
+    /// Modelled flux from bright spot
     #[pyo3(get)]
     pub bright_spot: Py<PyArray1<f64>>,
 
+    /// Modelled flux from all components
     #[pyo3(get)]
     pub total: Py<PyArray1<f64>>,
 
+    /// Scale factor of the model
     #[pyo3(get)]
     pub scale_factor: f64,
 
+    /// Contribution of star 1 at phase 0.5 in same units as flux
     #[pyo3(get)]
     pub star1_contribution: f64,
 
+    /// Surface gravity of star 1
     #[pyo3(get)]
     pub logg1: Option<f64>,
 
+    /// Surface gravity of star 2
     #[pyo3(get)]
     pub logg2: Option<f64>,
 
+    /// Volume-averaged scaled radius of star 1
     #[pyo3(get)]
     pub rva1: f64,
 
+    /// Volume-averaged scaled radius of star 2
     #[pyo3(get)]
     pub rva2: f64,
 
+    /// Chi-square value for model
     #[pyo3(get)]
     pub chi2: Option<f64>,
 
+    /// Log probability of model
     #[pyo3(get)]
     pub log_prob: Option<f64>,
 }
@@ -105,13 +120,17 @@ pub struct BinaryModel {
 #[pymethods]
 impl BinaryModel {
 
+    /// 
     /// Create a :class:`BinaryModel` from an lcurve .mod file.
     ///
-    /// Parameters:
-    ///   filename (str): the path to the .mod file
+    /// Parameters
+    /// ----------
+    /// filename : str
+    ///     the path to the .mod file
     ///
-    /// Returns:
-    ///   BinaryModel: class instance
+    /// Returns
+    /// -------
+    /// :class:`BinaryModel`
     /// 
     #[staticmethod]
     pub fn from_file(filename: &str) -> PyResult<Self> {
@@ -146,6 +165,18 @@ impl BinaryModel {
         })
     }
 
+    /// 
+    /// Create a :class:`BinaryModel` from a :class:`Model` instance
+    /// 
+    /// Parameters
+    /// ----------
+    /// model : :class:`Model`
+    ///     the model to build the grids from
+    /// 
+    /// Returns
+    /// -------
+    /// :class:`BinaryModel`
+    /// 
     #[staticmethod]
     pub fn from_model(model: Model) -> PyResult<Self> {
         let (
@@ -208,67 +239,52 @@ impl BinaryModel {
     }
 
     ///
-    /// grid options are:
-    /// "star1_fine",
-    /// "star1_coarse",
-    /// "star2_fine",
-    /// "star2_coarse",
-    /// "disc",
-    /// "disc_edge",
-    /// "bright_spot"
-    /// 
-    // pub fn set_grid_fluxes(&mut self, grid: &str, fluxes: Vec<f32>) -> Result<(), RocheError> {
-    //     let chosen_grid = match grid {
-    //         "star1_fine" => &mut self.star1_fine_grid,
-    //         "star1_coarse" => &mut self.star1_coarse_grid,
-    //         "star2_fine" => &mut self.star2_fine_grid,
-    //         "star2_coarse" => &mut self.star2_coarse_grid,
-    //         "disc" => &mut self.disc_grid,
-    //         "disc_edge" => &mut self.disc_edge_grid,
-    //         "bright_spot" => &mut self.bright_spot_grid,
-    //         _ => return Err(RocheError::ParameterError("Not a valid grid.".to_string())),
-    //     };
-
-    //     apply_fluxes(chosen_grid, fluxes)?;
-    //     self.gint = set_ginterp(
-    //         &self.model,
-    //         self.rlens1,
-    //         &self.star1_coarse_grid,
-    //         &self.star2_coarse_grid,
-    //         &self.star1_fine_grid,
-    //         &self.star2_fine_grid,
-    //     )?;
-
-    //     Ok(())
-    // }
-
-    ///
     /// Computes a model light curve for an array of times and exposure times
     /// for the current parameters defined in :class:`BinaryModel.Model`.
     /// 
-    /// Parameters:
+    /// time and t_exp must be in the same units as :attr:`Model.t0` and
+    /// :attr:`Model.period` as defined in :class:`BinaryModel.Model`.
+    /// n_div defines the number of subdivisions that an exposure will
+    /// be split up into to allow for trapezium integration across finite-length
+    /// exposures (with t_exp defining this exposure time).
+    /// If both flux and flux_err are supplied and scale_factor is not then the
+    /// returned light curve model will be scaled to minimise the chi-squared.
+    /// If weights are not given they will be assumed to be 1 for all valid
+    /// datapoints. In all cases the scale_factor that is used can be accessed
+    /// as an attribute.
     /// 
-    /// `time`: (npoints, ) ndarray
+    /// Volume-averaged scaled radii and flux-weighted log(g) calculated from
+    /// the model can also be accessed as attributes (Note: The log(g) values
+    /// will be None if the velocity_scale is not 'defined').
+    /// 
+    /// If both flux and flux_err are given, the log_probability and the
+    /// chi-squared can also be accessed as attributes (otherwise they will be
+    /// None). If weight is given then this will be taken into account for both
+    /// the log probability and the chi-squared.
+    /// 
+    /// Parameters
+    /// ----------
+    /// time : (npoints, ) ndarray
     ///     A 1-D array of times.
-    /// `t_exp`: (npoints, ) ndarray
+    /// t_exp : (npoints, ) ndarray
     ///     An array of exposure times (same units as `time`)
-    /// `n_div`: (npoints, ) ndarray, optional
+    /// n_div : (npoints, ) ndarray, optional
     ///     number of exposure subdivisions to use to model smearing from
     ///     finite exposure times. 
-    /// `flux`: (npoints, ) ndarray, optional
+    /// flux : (npoints, ) ndarray, optional
     ///     flux of data to enable automatic scaling of the model as well as for
     ///     calculations of chi2 and log_prob.
-    /// `flux_err`: (npoints, ) ndarray, optional
+    /// flux_err : (npoints, ) ndarray, optional
     ///     flux uncertainty of data to enable automatic scaling of the model
     ///     as well as for calculations of chi2 and log_prob.
-    /// `weight`: (npoints, ) ndarray, optional
+    /// weight : (npoints, ) ndarray, optional
     ///     weights for autoscaling, chi2, and log_prob
-    /// `scale_factor`: float, optional
+    /// scale_factor : float, optional
     ///     Scale factor to multiply light curve model by. Prevents autoscaling
     /// 
-    /// Returns:
-    ///     
-    ///     :class:`LightCurve`
+    /// Returns
+    /// -------
+    /// :class:`LightCurve`
     /// 
     #[pyo3(signature = (
         time,

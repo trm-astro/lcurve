@@ -1426,24 +1426,55 @@ impl Model {
         Model::default()
     }
 
+    ///
+    /// Initialise a :class:`Model` from an lcurve .mod file
+    /// 
+    /// Parameters
+    /// ----------
+    /// path : str
+    ///     path to the lcurve model file
+    /// 
+    /// Returns
+    /// -------
+    /// :class:`Model`
+    /// 
     #[staticmethod]
     #[pyo3(name="from_file")]
     fn from_file_py(path: &str) -> PyResult<Self> {
         Model::from_file(path).map_err(pyo3::exceptions::PyIOError::new_err)
     }
 
+    ///
+    /// Write a :class:`Model` to an lcurve .mod file
+    /// 
+    /// Parameters
+    /// ----------
+    /// path : str
+    ///     path to the lcurve model file
+    /// 
     #[pyo3(name="write")]
     fn write_py(&self, path: &str) -> PyResult<()> {
         self.write(path)
             .map_err(pyo3::exceptions::PyIOError::new_err)
     }
 
+    ///
+    /// Update a :class:`Model`
+    /// 
+    /// Parameters
+    /// ----------
+    /// dict : dict
+    ///     dictionary of model key-value pairs
+    /// 
     fn update(&mut self, _py: Python, dict: &Bound<'_, PyAny>) -> PyResult<()> {
         let upd: ModelUpdate = from_pyobject(dict.clone())?;
         self.apply_update(upd)?;
         Ok(())
     }
 
+    ///
+    /// Convert a :class:`Model` to a dictionary
+    /// 
     fn to_dict<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyAny>> {
         Ok(serde_pyobject::to_pyobject(py, self)?)
     }

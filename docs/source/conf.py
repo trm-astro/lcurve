@@ -22,7 +22,7 @@ extensions = [
     "sphinx.ext.autodoc",  # Automatic documentation generation from docstrings
     "sphinx.ext.autosummary",  # Generate summary tables for modules/classes/functions
     "sphinx.ext.intersphinx",  # Link to other projects' documentation
-    "sphinx.ext.napoleon",  # Parse Google and NumPy style docstrings
+    "numpydoc",  # NumPy style docstrings
     "sphinx.ext.viewcode",  # Add links to source code
     # MyST extensions
     # "myst_parser",  # Markdown support (not needed, included with myst_nb)
@@ -53,7 +53,7 @@ myst_enable_extensions = [
 # -- Options for Napoleon -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html
 
-napoleon_google_docstring = True
+# napoleon_numpy_docstring = True
 
 
 # -- Options for autosummary ---------------------------------------------------
