@@ -44,3 +44,7 @@ The choice of law is set by the {py:attr}`limb1 <lcurve.Model.limb1>` and {py:at
 Both doppler beaming and relativistic aberration are taken into account.
 
 ## Reflection effect
+
+In close binaries where there is a significant temperature difference between components, light from the hotter source can be absorbed, reprocessed, and re-emitted by the cooler sources leading to a brighter face where the incident flux is highest. Obvious examples of this effect are systems such as NN Ser (Parsons et al 2010) composed of a hot white dwarf with a close late M dwarf companion or sdB+M binaries such as (?). These systems show quasi-sinusoidal variability on the orbital period.
+
+In LCURVE, reflection effect is modelled assuming that the hot star is a point source and the absorbed flux from this source is then reprocessed leading to an increased flux on the surface of the other components. Reflection effect can be modelled for both stars as well as the edge of the accretion disc. The parameter $\texttt{absorb}$ defined what fraction of the incident flux is absorbed and reprocessed.
