@@ -336,7 +336,7 @@ impl ModelUpdate {
     }
 }
 
-#[pyclass(from_py_object)]
+#[pyclass(from_py_object, module = "lcurve")]
 #[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 #[serde(default)]
 pub struct Model {
@@ -976,7 +976,7 @@ impl Model {
             return Err(RocheError::ParameterError("Not all necessary parameters are defined.".to_string()));
         }
         check_parameter_f64_or_error(self.iangle.value, 0.0, 90.0, "iangle must be between 0.0 and 90.0.")?;
-        check_parameter_f64_or_error(self.q.value, f64::MIN_POSITIVE, f64::INFINITY, "q must be positive and non-zero.")?;
+        check_parameter_f64_or_error(self.q.value, f64::MIN_POSITIVE, f64::MAX, "q must be positive and non-zero.")?;
         let rl1: f64 = x_l1_1(self.q.value, self.spin1.value).unwrap();
         let rl2: f64 = 1.0 - x_l1_2(self.q.value, self.spin2.value).unwrap();
 
@@ -992,10 +992,10 @@ impl Model {
         check_parameter_f64_or_error(self.t2.value, 0.0, MAX_TEMP, "t2 must be positive.")?;
         check_parameter_f64_or_error(self.velocity_scale.value, f64::MIN_POSITIVE, C / 1000.0, "velocity_scale must be positive and not exceed the speed of light.")?;
         check_parameter_f64_or_error(self.period.value, f64::MIN_POSITIVE, f64::INFINITY, "period must be positive and non-zero.")?;
-        check_parameter_f64_or_error(self.absorb.value, 0.0, 1.0, "absorb must be between 0.0 and 1.0.")?;
-        check_parameter_f64_or_error(self.third.value, 0.0, f64::INFINITY, "third must be positive")?;
-        check_parameter_f64_or_error(self.wavelength, f64::MIN_POSITIVE, f64::INFINITY, "wavelength must be positive and non-zero.")?; 
-        check_parameter_f64_or_error(self.tperiod, f64::MIN_POSITIVE, f64::INFINITY, "tperiod must be positive and non-zero.")?;
+        check_parameter_f64_or_error(self.absorb.value, 0.0, f64::MAX, "absorb must be positive")?;
+        check_parameter_f64_or_error(self.third.value, 0.0, f64::MAX, "third must be positive")?;
+        check_parameter_f64_or_error(self.wavelength, f64::MIN_POSITIVE, f64::MAX, "wavelength must be positive and non-zero.")?; 
+        check_parameter_f64_or_error(self.tperiod, f64::MIN_POSITIVE, f64::MAX, "tperiod must be positive and non-zero.")?;
 
         if self.add_disc {
             if !self.disc_defined(){
@@ -1005,7 +1005,7 @@ impl Model {
             check_parameter_f64_or_error(self.rdisc2.value, -1.0, rl1, "rdisc2 must be between -1.0 and 1.0 and not exceed the Roche lobe of the primary star.")?;
             check_parameter_f64_or_error(self.temp_disc.value, 0.0, MAX_TEMP, "temp_disc must be positive.")?;
             check_parameter_f64_or_error(self.temp_edge.value, 0.0, MAX_TEMP, "temp_edge must be positive.")?;
-            check_parameter_f64_or_error(self.absorb_edge.value, 0.0, 1.0, "absorb_edge must be between 0.0 and 1.0.")?;
+            check_parameter_f64_or_error(self.absorb_edge.value, 0.0, f64::MAX, "absorb_edge must be positive.")?;
         }
 
         if self.add_spot {
@@ -1207,6 +1207,30 @@ impl Model {
     fn __repr__(&self) -> PyResult<String> {
         serde_json::to_string_pretty(self)
             .map_err(|e| pyo3::exceptions::PyRuntimeError::new_err(e.to_string()))
+    }
+
+    fn __getstate__<'py>(
+        &self,
+        py: Python<'py>,
+    ) -> PyResult<Bound<'py, PyAny>> {
+        serde_pyobject::to_pyobject(py, self)
+            .map_err(|e| {
+                pyo3::exceptions::PyValueError::new_err(e.to_string())
+            })
+    }
+
+    fn __setstate__(
+        &mut self,
+        state: &Bound<'_, PyAny>,
+    ) -> PyResult<()> {
+        let restored: Model =
+            serde_pyobject::from_pyobject(state.clone())
+                .map_err(|e| {
+                    pyo3::exceptions::PyValueError::new_err(e.to_string())
+                })?;
+
+        *self = restored;
+        Ok(())
     }
 }
 
