@@ -77,7 +77,7 @@ pub struct LightCurve {
 /// Parameters can be updated by supplying a python dictionary of parameter
 /// key: value pairs to :meth:`BinaryModel.update`.
 ///
-#[pyclass]
+#[pyclass(module = "lcurve")]
 pub struct BinaryModel {
     #[pyo3(get)]
     star1_coarse_grid: Grid,
@@ -104,6 +104,42 @@ pub struct BinaryModel {
 
 #[pymethods]
 impl BinaryModel {
+
+    #[new]
+    pub fn new(model: Model) -> PyResult<Self> {
+        let (
+            star1_coarse_grid,
+            star2_coarse_grid,
+            star1_fine_grid,
+            star2_fine_grid,
+            disc_grid,
+            disc_edge_grid,
+            bright_spot_grid,
+            gint,
+            rlens1,
+            model_beaming1,
+            model_beaming2,
+        ) = build_grids(&model)?;
+
+        Ok(Self {
+            star1_coarse_grid,
+            star2_coarse_grid,
+            star1_fine_grid,
+            star2_fine_grid,
+            disc_grid,
+            disc_edge_grid,
+            bright_spot_grid,
+            gint,
+            rlens1,
+            model_beaming1,
+            model_beaming2,
+            model,
+        })
+    }
+
+    pub fn __getnewargs__(&self) -> (Model,) {
+        (self.model,)
+    }
 
     /// Create a :class:`BinaryModel` from an lcurve .mod file.
     ///
@@ -148,34 +184,7 @@ impl BinaryModel {
 
     #[staticmethod]
     pub fn from_model(model: Model) -> PyResult<Self> {
-        let (
-            star1_coarse_grid,
-            star2_coarse_grid,
-            star1_fine_grid,
-            star2_fine_grid,
-            disc_grid,
-            disc_edge_grid,
-            bright_spot_grid,
-            gint,
-            rlens1,
-            model_beaming1,
-            model_beaming2,
-        ) = build_grids(&model)?;
-
-        Ok(Self {
-            star1_coarse_grid,
-            star2_coarse_grid,
-            star1_fine_grid,
-            star2_fine_grid,
-            disc_grid,
-            disc_edge_grid,
-            bright_spot_grid,
-            gint,
-            rlens1,
-            model_beaming1,
-            model_beaming2,
-            model,
-        })
+        Self::new(model)
     }
 
     ///
