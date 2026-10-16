@@ -3,7 +3,7 @@ use std::str::FromStr;
 use std::fmt;
 use pyo3::prelude::*;
 
-#[pyclass(from_py_object)]
+#[pyclass(from_py_object, module = "lcurve")]
 #[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Pparam {
@@ -30,6 +30,16 @@ impl Pparam {
     fn __repr__(&self) -> PyResult<String> {
         serde_json::to_string_pretty(self)
             .map_err(|e| pyo3::exceptions::PyRuntimeError::new_err(e.to_string()))
+    }
+
+    fn __getnewargs__(&self) -> (f64, f64, f64, bool, bool) {
+        (
+            self.value,
+            self.range,
+            self.dstep,
+            self.vary,
+            self.defined,
+        )
     }
 
 }
